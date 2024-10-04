@@ -1,2 +1,2 @@
-# Brick_ontology_tool
+# Brick ontology tool
 Application to create brick ontology starting from user prompt
