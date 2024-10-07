@@ -74,7 +74,7 @@ def run_ontology(btn, text_prompt):
     
     if ctx.triggered_id == "btn_icon_ontology":
         
-        result = True
+        result = False
         simulate_btn_disabled = False
         try:
             log_buffer.seek(0)
@@ -100,12 +100,13 @@ def run_ontology(btn, text_prompt):
                 print(ttl_output)
                 with open(f'files/brick_{btn}.ttl', 'w') as f:
                     f.write(ttl_output)
+                result=True
+                
 
         except Exception as e:
             msg = str(e)
             msg = msg + '-----' + str(os.getcwd())
             print(msg)
-            result = False
 
         finally:
             sys.stdout = sys.__stdout__
