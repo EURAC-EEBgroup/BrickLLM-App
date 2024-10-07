@@ -59,13 +59,12 @@ def disable_simulate_btn(btn):
 @callback(
     Output("simulation_run","children"),
     Output("btn_icon_ontology","disabled", allow_duplicate=True),
-    Output({"type": "btn_attachment", "index": ALL}, "disabled"),
+    Output("ttl-result", "data"),
     Input("btn_icon_ontology","n_clicks"),
     State("prompt_command_ontology","value"),
-    State({"type": "btn_attachment", "index": ALL}, "id"),
     prevent_initial_call=True
 )
-def run_ontology(btn, text_prompt, ttl_btns):
+def run_ontology(btn, text_prompt):
     '''
     Run brickllm library to create ontology form prompt
     '''
@@ -77,7 +76,6 @@ def run_ontology(btn, text_prompt, ttl_btns):
         
         result = True
         simulate_btn_disabled = False
-        ttl_btns_disabled = [no_update] * len(ttl_btns)
         try:
             log_buffer.seek(0)
             log_buffer.truncate()
@@ -100,7 +98,6 @@ def run_ontology(btn, text_prompt, ttl_btns):
             # Save the output to a file
             if ttl_output:
                 print(ttl_output)
-                ttl_btns_disabled[-1]=False
                 with open(f'files/brick_{btn}.ttl', 'w') as f:
                     f.write(ttl_output)
 
@@ -112,10 +109,24 @@ def run_ontology(btn, text_prompt, ttl_btns):
 
         finally:
             sys.stdout = sys.__stdout__
-            return "", simulate_btn_disabled, ttl_btns_disabled
+            return "", simulate_btn_disabled, result
         
     raise PreventUpdate
 
+
+@callback(
+    Output({"type": "btn_attachment", "index": ALL}, "disabled"),
+    Input("ttl-result", "data"),
+    State({"type": "btn_attachment", "index": ALL}, "id"),
+)
+def enable_ttl_download_btn(data, ids):
+    if data is None:
+        raise PreventUpdate
+    
+    btns = [no_update] * len(ids)
+    if data: 
+        btns[-1]=False
+    return btns 
 
 
 @callback(
