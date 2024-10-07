@@ -28,17 +28,6 @@ layout_ = dmc.Container(
                     w='100%',
                     children = [
                         html.Div(id="ontology-container-div", children=[]),
-                        html.Div(
-                            children=[
-                                html.Div(id="log-output", style={"whiteSpace": "pre-line"}),
-                                dcc.Interval(
-                                    id='log-output-interval',
-                                    interval=1000,  # in milliseconds
-                                    n_intervals=0  # initial number of intervals
-                                )
-                            ],
-                            className='live-log-output'
-                        ),
                         dmc.Flex(
                             id="prompt_flex",
                             children = [
@@ -57,7 +46,6 @@ layout_ = dmc.Container(
                                     size="xl",
                                     variant="transparent",
                                     id="btn_icon_ontology",
-                                    n_clicks=0,
                                     style = {'marginTop':'auto', 'bottom':'10'}
                                 ),
                                 

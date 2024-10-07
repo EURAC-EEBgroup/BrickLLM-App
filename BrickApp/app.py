@@ -34,6 +34,7 @@ app.layout = dmc.MantineProvider(
         html.Div(id='notifiaction-wrap'),
         dcc.Location(id='url_app'),
         dcc.Store(id='color-theme', storage_type='session'),
+        dcc.Store(id='log-output-store', data=""),
         dmc.AppShell(
             header={"height": 80},
             children=[

@@ -45,19 +45,41 @@ if ttl_output:
 '''
 
 @callback(
-    Output("simulation_run","children"),
+    Output("btn_icon_ontology","disabled"),
     Input("btn_icon_ontology","n_clicks"),
-    State("prompt_command_ontology","value")
+)
+def disable_simulate_btn(btn):
+    if btn is None: 
+        raise PreventUpdate
+    
+    disabled = True
+    return disabled
+
+
+@callback(
+    Output("simulation_run","children"),
+    Output("btn_icon_ontology","disabled", allow_duplicate=True),
+    Input("btn_icon_ontology","n_clicks"),
+    State("prompt_command_ontology","value"),
+    prevent_initial_call=True
 )
 def run_ontology(btn, text_prompt):
     '''
     Run brickllm library to create ontology form prompt
     '''
+
+    if btn is None: 
+        raise PreventUpdate
+    
     if ctx.triggered_id == "btn_icon_ontology":
         
         result = True
+        simulate_btn_disabled = False
         try:
+            log_buffer.seek(0)
+            log_buffer.truncate()
             sys.stdout = log_buffer
+
             # Create an instance of BrickSchemaGraph
             brick_graph = BrickSchemaGraph()
 
@@ -77,7 +99,6 @@ def run_ontology(btn, text_prompt):
                 print(ttl_output)
                 with open(f'files/brick_{btn}.ttl', 'w') as f:
                     f.write(ttl_output)
-                sys.stdout = sys.__stdout__
 
         except Exception as e:
             msg = str(e)
@@ -85,30 +106,36 @@ def run_ontology(btn, text_prompt):
             print(msg)
             result = False
 
-        return ""
+        finally:
+            sys.stdout = sys.__stdout__
+            return "", simulate_btn_disabled
+        
     raise PreventUpdate
 
 
 
 @callback(
-    Output("log-output", "children"),
+    Output("log-output-store", "data"),
     Input("log-output-interval", "n_intervals"),
-    State('btn_icon_ontology', 'n_clicks'),
+    Input('btn_icon_ontology', 'n_clicks'),
 )
-def update_logs(n, btn):
-    patched_children = Patch()
-    
+def update_logs_store(n, btn):
     if btn is None: 
         raise PreventUpdate
-    
+
     log_buffer.seek(0)
     logs = log_buffer.read()
     
-    
-    
-    patched_children.append(logs)
-    
-    return patched_children
+    return logs
+
+
+@callback(
+    Output("log_output_text", "children"),
+    Input("log-output-store", "data"),
+)
+def update_logs(data):
+
+    return data
 
 
 
@@ -130,6 +157,16 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                             dmc.Stack(
                                 children = [
                                     input_request,
+                                    dmc.Text(
+                                        id='log_output_text',
+                                        mt=5,
+                                        mb=5,
+                                    ),
+                                    dcc.Interval(
+                                        id='log-output-interval',
+                                        interval=1000,  # in milliseconds
+                                        n_intervals=0  # initial number of intervals
+                                    ),
                                     dmc.Button(
                                         id={"type": "btn_attachment", "index": n_clicks},
                                         children = dmc.Text(f"{btn_name_ttl}.ttl", td="underline"),

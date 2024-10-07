@@ -1756,21 +1756,6 @@ th {
   background-color: #eeeeee;
 }
 
-.live-log-output {
-  max-height: 50vh;
-  overflow: auto;
-  background-color: black;
-  margin: 1rem;
-  padding: 1rem;
-  border: 2px solid #808080;
-  color: white;
-  display: flex;
-  margin-left: 0px;
-  flex-direction: column-reverse;
-  width:100%;
-  height: 30vh;
-}
-
 .m_4081bf90{
   justify-content: space-evenly ;
 }

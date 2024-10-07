@@ -12,6 +12,7 @@ pandas = "*"
 py2app = "*"
 setuptools = "==70.3.0"
 pipfile = "*"
+brickllm = {file = "dist_brick_local/brickllm-0.0.2.tar.gz"}
 
 [dev-packages]
 
