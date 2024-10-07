@@ -35,6 +35,7 @@ app.layout = dmc.MantineProvider(
         dcc.Location(id='url_app'),
         dcc.Store(id='color-theme', storage_type='session'),
         dcc.Store(id='log-output-store', data=""),
+        dcc.Store(id='ttl-result'),
         dmc.AppShell(
             header={"height": 80},
             children=[
@@ -72,7 +73,7 @@ def run_native_dash_app(dash_app: Dash, window_title: str = None) -> None:
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=True, port=8092, dev_tools_hot_reload=True)
+    app.run_server(debug=False, port=8092, dev_tools_hot_reload=True)
     # app.run(debug=False) # uncomment this line to run Dash application, and comment otherwise.
 
     '''Run Pywebview application (Production)'''
