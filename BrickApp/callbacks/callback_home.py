@@ -1,4 +1,4 @@
-from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH
+from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update
 from dash.exceptions import PreventUpdate
 import io
 from brickllm.graphs import BrickSchemaGraph
@@ -59,11 +59,13 @@ def disable_simulate_btn(btn):
 @callback(
     Output("simulation_run","children"),
     Output("btn_icon_ontology","disabled", allow_duplicate=True),
+    Output({"type": "btn_attachment", "index": ALL}, "disabled"),
     Input("btn_icon_ontology","n_clicks"),
     State("prompt_command_ontology","value"),
+    State({"type": "btn_attachment", "index": ALL}, "id"),
     prevent_initial_call=True
 )
-def run_ontology(btn, text_prompt):
+def run_ontology(btn, text_prompt, ttl_btns):
     '''
     Run brickllm library to create ontology form prompt
     '''
@@ -75,6 +77,7 @@ def run_ontology(btn, text_prompt):
         
         result = True
         simulate_btn_disabled = False
+        ttl_btns_disabled = [no_update] * len(ttl_btns)
         try:
             log_buffer.seek(0)
             log_buffer.truncate()
@@ -97,6 +100,7 @@ def run_ontology(btn, text_prompt):
             # Save the output to a file
             if ttl_output:
                 print(ttl_output)
+                ttl_btns_disabled[-1]=False
                 with open(f'files/brick_{btn}.ttl', 'w') as f:
                     f.write(ttl_output)
 
@@ -108,7 +112,7 @@ def run_ontology(btn, text_prompt):
 
         finally:
             sys.stdout = sys.__stdout__
-            return "", simulate_btn_disabled
+            return "", simulate_btn_disabled, ttl_btns_disabled
         
     raise PreventUpdate
 
@@ -172,7 +176,8 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                                         children = dmc.Text(f"{btn_name_ttl}.ttl", td="underline"),
                                         leftSection= DashIconify(icon="hugeicons:attachment-square", width=20, color="grey"),
                                         variant="transparent",
-                                        n_clicks=0
+                                        n_clicks=0,
+                                        disabled=True
                                     )
                                 ],
                                 align="flex-start"
@@ -227,17 +232,13 @@ def display_dropdowns(n_clicks, prompt_text):
 #                                   SAVE TTL FILE AND MAKE AVAILABLE 
 # ==========================================================================================
 
-
 @callback(
     Output("download_ttl", "data"),
-    Input("btn_icon_ontology", "n_clicks"),
     Input({"type": "btn_attachment", "index": ALL}, "n_clicks"),
     prevent_initial_call=True
 )
-def test(btn_prompt, n_clicks):
+def test(n_clicks):
     
-    if ctx.triggered_id == "btn_icon_ontology":
-        raise PreventUpdate
     if not ctx.triggered:
         raise PreventUpdate
         # return "No button has been clicked yet."
@@ -248,10 +249,24 @@ def test(btn_prompt, n_clicks):
         button_name = f"btn_{button_id['index']}"
         if n_clicks[button_id['index'] - 1] > 0:  # Check if the button has been clicked
             if button_id['type']=="btn_attachment":
-                return dcc.send_file(os.getcwd()+f"/files/brick_{button_id['index']}.ttl")
-            else:
-                raise PreventUpdate
+                return dcc.send_file(os.getcwd()+f"/BrickApp/files/brick_{button_id['index']}.ttl")
+        raise PreventUpdate
         
+
+
+@callback(
+    Output({"type": "btn_attachment", "index": ALL}, "n_clicks"),
+    Input("btn_icon_ontology", "n_clicks"),
+    State({"type": "btn_attachment", "index": ALL}, "id"),
+)
+def update_buttons_state(btn, ids):
+    """ Workaround to keep ttl download buttons not active on btn_icon_ontology click"""
+    if btn is None: 
+        raise PreventUpdate
+
+    btns = [0] * len(ids)
+    return btns
+
 
 # ==========================================================================================
 #                                   DOWNLOAD FILE
