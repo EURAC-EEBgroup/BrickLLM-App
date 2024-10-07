@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+dash = "*"
+pywebview = "*"
+dash-mantine-components = "*"
+dash-iconify = "*"
+pandas = "*"
+py2app = "*"
+setuptools = "==70.3.0"
+pipfile = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
