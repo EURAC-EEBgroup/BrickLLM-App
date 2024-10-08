@@ -40,21 +40,34 @@ layout_ = dmc.Container(
                                 #     style = {'marginTop':'auto', 'bottom':'0'},
                                 #     # mb=10,
                                 # ),
-                                dmc.Textarea(id="prompt_command_ontology", value = prompt_text_example, autosize=True, w="100%",radius="lg", p="md"),
+                                dmc.Textarea(id="prompt_command_ontology", value = prompt_text_example, autosize=True, w="100%",
+                                             style = {
+                                                 'backgroundColor': 'transparent !important' ,
+                                                 'border': '0px',
+                                                 'color': 'black',
+                                                 'fontSize': '16px'
+                                             }),
                                 dmc.ActionIcon(
-                                    DashIconify(icon="solar:send-square-bold", width=100, rotate=1, color="black"),
+                                    id="btn_icon_ontology",
+                                    children = DashIconify(icon="fa6-solid:trowel-bricks", id="icon_run",width=25, rotate=0, color="black", flip="horizontal"),
                                     size="xl",
                                     variant="transparent",
-                                    id="btn_icon_ontology",
-                                    style = {'marginTop':'auto', 'bottom':'10'}
+                                    style = {
+                                        'marginTop':'auto', 
+                                        'bottom':'20',
+                                        'border':'2px solid black',
+                                        'color':'black',
+                                        'padding':'2px',
+                                        'borderRadius':'40px',
+                                        'marginRight':'2px',
+                                        'marginBottom':'2px'}
                                 ),
                                 
                             ],
                             w="100%"
                         ),
-                        dmc.Title("Live Output", lh=1.2, order=3, mt="xs", fw=900, c="black"),
-                        
                         html.Div(id="simulation_run"),
+<<<<<<< Updated upstream
                         dmc.Group(
                             children = [
                                 dmc.Button(
@@ -68,6 +81,8 @@ layout_ = dmc.Container(
                             ],
                             justify="flex-end"
                         ),
+=======
+>>>>>>> Stashed changes
                     ]
                 ),
             ],
