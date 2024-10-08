@@ -35,7 +35,7 @@ app.layout = dmc.MantineProvider(
         dcc.Location(id='url_app'),
         dcc.Store(id='color-theme', storage_type='session'),
         dcc.Store(id='log-output-store', data=""),
-        dcc.Store(id='ttl-result'),
+        dcc.Store(id='ttl-result', data={}),
         dmc.AppShell(
             header={"height": 80},
             children=[

@@ -65,7 +65,6 @@ layout_ = dmc.Container(
                                     style = {'backgroundColor':'#e12024'},
                                     mt=10
                                 ),
-                                dcc.Download(id="download_ttl")
                             ],
                             justify="flex-end"
                         ),

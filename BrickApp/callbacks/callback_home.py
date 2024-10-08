@@ -62,9 +62,10 @@ def disable_simulate_btn(btn):
     Output("ttl-result", "data"),
     Input("btn_icon_ontology","n_clicks"),
     State("prompt_command_ontology","value"),
+    State("ttl-result", "data"),
     prevent_initial_call=True
 )
-def run_ontology(btn, text_prompt):
+def run_ontology(btn, text_prompt, ttl_result):
     '''
     Run brickllm library to create ontology form prompt
     '''
@@ -72,9 +73,10 @@ def run_ontology(btn, text_prompt):
     if btn is None: 
         raise PreventUpdate
     
+    ttl_result[f"brick_{btn}.ttl"] = None
+
     if ctx.triggered_id == "btn_icon_ontology":
         
-        ttl_result = False
         simulate_btn_disabled = False
         try:
             log_buffer.seek(0)
@@ -98,10 +100,7 @@ def run_ontology(btn, text_prompt):
             # Save the output to a file
             if ttl_output:
                 print(ttl_output)
-                with open(f'files/brick_{btn}.ttl', 'w') as f:
-                    f.write(ttl_output)
-                ttl_result=True
-                
+                ttl_result[f"brick_{btn}.ttl"] = ttl_output
 
         except Exception as e:
             msg = str(e)
@@ -121,12 +120,15 @@ def run_ontology(btn, text_prompt):
     State({"type": "btn_attachment", "index": ALL}, "id"),
 )
 def enable_ttl_download_btn(data, ids):
-    if data is None:
+    if data == {}:
         raise PreventUpdate
     
     btns = [no_update] * len(ids)
-    if data: 
-        btns[-1]=False
+
+    filename = f"brick_{(len(ids))}.ttl"
+    if data[filename]: 
+        btns[-1]=False # update only last button
+
     return btns 
 
 
@@ -190,7 +192,8 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                                         variant="transparent",
                                         n_clicks=0,
                                         disabled=True
-                                    )
+                                    ),
+                                    dcc.Download(id={"type": "download_ttl", "index": n_clicks})
                                 ],
                                 align="flex-start"
                             )
@@ -245,24 +248,18 @@ def display_dropdowns(n_clicks, prompt_text):
 # ==========================================================================================
 
 @callback(
-    Output("download_ttl", "data"),
-    Input({"type": "btn_attachment", "index": ALL}, "n_clicks"),
+    Output({"type": "download_ttl", "index": MATCH}, "data"),
+    Input({"type": "btn_attachment", "index": MATCH}, "n_clicks"),
+    State("ttl-result", "data"),
     prevent_initial_call=True
 )
-def test(n_clicks):
+def test(n_clicks, ttl_data):
+    if not n_clicks: 
+        raise PreventUpdate
     
-    if not ctx.triggered:
-        raise PreventUpdate
-        # return "No button has been clicked yet."
-    else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        button_id = eval(button_id)  # Convert string dictionary representation to dictionary
-        print(button_id)
-        button_name = f"btn_{button_id['index']}"
-        if n_clicks[button_id['index'] - 1] > 0:  # Check if the button has been clicked
-            if button_id['type']=="btn_attachment":
-                return dcc.send_file(os.getcwd()+f"/BrickApp/files/brick_{button_id['index']}.ttl")
-        raise PreventUpdate
+    filename = f"brick_{ctx.triggered_id['index']}.ttl"
+    data = ttl_data[filename]
+    return dcc.send_string(data, filename)
         
 
 
