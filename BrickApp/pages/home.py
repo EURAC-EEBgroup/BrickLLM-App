@@ -67,22 +67,6 @@ layout_ = dmc.Container(
                             w="100%"
                         ),
                         html.Div(id="simulation_run"),
-<<<<<<< Updated upstream
-                        dmc.Group(
-                            children = [
-                                dmc.Button(
-                                    id="btn_download_ontology",
-                                    children = "DOWNLOAD FILE",
-                                    fullWidth=True,
-                                    radius="lg",
-                                    style = {'backgroundColor':'#e12024'},
-                                    mt=10
-                                ),
-                            ],
-                            justify="flex-end"
-                        ),
-=======
->>>>>>> Stashed changes
                     ]
                 ),
             ],

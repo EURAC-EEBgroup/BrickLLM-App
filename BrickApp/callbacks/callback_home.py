@@ -275,16 +275,3 @@ def update_buttons_state(btn, ids):
 
     btns = [0] * len(ids)
     return btns
-
-
-# ==========================================================================================
-#                                   DOWNLOAD FILE
-# ==========================================================================================
-
-# @callback(
-#     Output("download_ttl", "data"),
-#     Input("btn_download_ontology", "n_clicks"),
-#     prevent_initial_call=True,
-# )
-# def func(n_clicks):
-#     return dcc.send_file(os.getcwd()+"/files/output.ttl")
