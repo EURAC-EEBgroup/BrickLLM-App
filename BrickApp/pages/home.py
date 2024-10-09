@@ -62,6 +62,13 @@ layout_ = dmc.Container(
                                         'marginRight':'2px',
                                         'marginBottom':'2px'}
                                 ),
+                                dmc.ActionIcon(
+                                    DashIconify(icon="fluent:record-stop-24-regular", width=100, rotate=1, color="black"),
+                                    size="xl",
+                                    variant="transparent",
+                                    id="btn_ontology_stop",
+                                    style = {'marginTop':'auto', 'bottom':'10'}
+                                ),
                                 
                             ],
                             w="100%"

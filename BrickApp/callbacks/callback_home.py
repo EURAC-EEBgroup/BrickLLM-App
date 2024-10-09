@@ -1,4 +1,4 @@
-from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update
+from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update, set_props
 from dash.exceptions import PreventUpdate
 import io
 from brickllm.graphs import BrickSchemaGraph
@@ -44,25 +44,34 @@ if ttl_output:
         f.write(ttl_output)
 '''
 
-@callback(
-    Output("btn_icon_ontology","disabled"),
-    Input("btn_icon_ontology","n_clicks"),
-)
-def disable_simulate_btn(btn):
-    if btn is None: 
-        raise PreventUpdate
-    
-    disabled = True
-    return disabled
+class BackgroundBuffer:
+    """ Take the contents of stdout during a background callback and put it into dcc.Store. """
+    def write(self, message):
+        if message.strip():
+            set_props(
+                "log-progress-store",
+                {'data': message}
+            )
+        
+    def flush(self):  # Required for compatibility with the standard output
+        pass
+
 
 
 @callback(
     Output("simulation_run","children"),
-    Output("btn_icon_ontology","disabled", allow_duplicate=True),
     Output("ttl-result", "data"),
     Input("btn_icon_ontology","n_clicks"),
     State("prompt_command_ontology","value"),
     State("ttl-result", "data"),
+    background=True,
+    running=[
+        (Output("btn_icon_ontology", "display"), "none", True),
+        (Output("btn_ontology_stop", "display"), True, "none"),
+    ],
+    cancel=[
+        Input('btn_ontology_stop', 'n_clicks')
+    ],
     prevent_initial_call=True
 )
 def run_ontology(btn, text_prompt, ttl_result):
@@ -77,10 +86,8 @@ def run_ontology(btn, text_prompt, ttl_result):
 
     if ctx.triggered_id == "btn_icon_ontology":
         
-        simulate_btn_disabled = False
         try:
-            log_buffer.seek(0)
-            log_buffer.truncate()
+            log_buffer = BackgroundBuffer()
             sys.stdout = log_buffer
 
             # Create an instance of BrickSchemaGraph
@@ -109,7 +116,7 @@ def run_ontology(btn, text_prompt, ttl_result):
 
         finally:
             sys.stdout = sys.__stdout__
-            return "", simulate_btn_disabled, ttl_result
+            return "", ttl_result
         
     raise PreventUpdate
 
@@ -126,7 +133,7 @@ def enable_ttl_download_btn(data, ids):
     btns = [no_update] * len(ids)
 
     filename = f"brick_{(len(ids))}.ttl"
-    if data[filename]: 
+    if filename in data and data[filename]: 
         btns[-1]=False # update only last button
 
     return btns 
@@ -134,17 +141,28 @@ def enable_ttl_download_btn(data, ids):
 
 @callback(
     Output("log-output-store", "data"),
-    Input("log-output-interval", "n_intervals"),
-    Input('btn_icon_ontology', 'n_clicks'),
+    Input("log-progress-store", "data"),
+    State("log-output-store", "data"),
 )
-def update_logs_store(n, btn):
-    if btn is None: 
+def update_logs_store(progress_data, output_data):
+    if progress_data == '': 
         raise PreventUpdate
-
-    log_buffer.seek(0)
-    logs = log_buffer.read()
+    
+    logs = output_data + '\n' + progress_data
     
     return logs
+
+
+@callback(
+    Output("log-output-store", "data", allow_duplicate=True),
+    Input("btn_icon_ontology","n_clicks"),
+    prevent_initial_call=True
+)
+def clear_old_logs(btn):
+    if btn is None: 
+        raise PreventUpdate
+    
+    return ""
 
 
 @callback(
@@ -179,6 +197,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                                         id='log_output_text',
                                         mt=5,
                                         mb=5,
+                                        style={'whiteSpace': 'pre-line'}
                                     ),
                                     dcc.Interval(
                                         id='log-output-interval',
