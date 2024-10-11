@@ -1819,3 +1819,29 @@ th {
   justify-content: end !important;
   font-size: smaller;
 } */
+
+
+#first-child {
+  background-color: pink;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#second-child {
+  background-color: orange;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+#first-child-wrap {
+  max-height: 400px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.single_test_card {
+  margin: 1rem;
+}

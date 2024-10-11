@@ -41,7 +41,7 @@ server.config.update(
 from components.header import Header
 from components.drawer import Drawer
 
-from callbacks import (callback_header, callback_settings, callback_home)
+from callbacks import (callback_header, callback_settings, callback_home, callback_test)
 
 app.layout = dmc.MantineProvider(
     id="mantine-provider",
