@@ -43,14 +43,6 @@ from components.header import Header
 from components.drawer import Drawer
 
 from callbacks import (callback_header, callback_settings, callback_home, callback_test)
-prompt_text_example = '''
-I have a building located in Bolzano.
-It has 3 floors and each floor has 1 office.
-There are 2 rooms in each office and each room has three sensors:
-- Temperature sensor;
-- Humidity sensor;
-- CO sensor.
-'''
 
 app.layout = dmc.MantineProvider(
     id="mantine-provider",

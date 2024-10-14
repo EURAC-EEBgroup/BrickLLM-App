@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-dash = "*"
 pywebview = "*"
 dash-mantine-components = "*"
 dash-iconify = "*"
@@ -13,6 +12,9 @@ py2app = "*"
 setuptools = "==70.3.0"
 pipfile = "*"
 brickllm = {file = "dist_brick_local/brickllm-0.0.2.tar.gz"}
+celery = "*"
+diskcache = "*"
+dash = {extras = ["diskcache"], version = "*"}
 
 [dev-packages]
 
