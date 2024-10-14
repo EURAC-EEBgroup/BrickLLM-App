@@ -6,7 +6,7 @@ import webview
 from dash import Dash, DiskcacheManager, CeleryManager, Input, Output, html, callback
 import celery
 from components.footer import Footer
-from dash_iconify import DashIconify
+
 
 # dash mantine components >= 14.0.1 requires React 18+
 dash._dash_renderer._set_react_version("18.2.0")
@@ -30,8 +30,8 @@ app = Dash(
     assets_folder='assets',  
     title="Brick LLM",
     suppress_callback_exceptions=True,
-    background_callback_manager=background_callback_manager,
-    external_stylesheets=dmc.styles.ALL,
+    background_callback_manager=background_callback_manager
+    # external_stylesheets=dmc.styles.ALL,
 )
 
 server = app.server
@@ -43,14 +43,6 @@ from components.header import Header
 from components.drawer import Drawer
 
 from callbacks import (callback_header, callback_settings, callback_home, callback_test)
-prompt_text_example = '''
-I have a building located in Bolzano.
-It has 3 floors and each floor has 1 office.
-There are 2 rooms in each office and each room has three sensors:
-- Temperature sensor;
-- Humidity sensor;
-- CO sensor.
-'''
 
 app.layout = dmc.MantineProvider(
     id="mantine-provider",
@@ -68,10 +60,10 @@ app.layout = dmc.MantineProvider(
             children=[
                 Header,
                 Drawer,
+                Footer,
                 dmc.AppShellMain(
                     dash.page_container
                 ),
-                Footer,
             ],
             padding="xl",
         )
@@ -101,7 +93,7 @@ def run_native_dash_app(dash_app: Dash, window_title: str = None) -> None:
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=True, port=8095, dev_tools_hot_reload=True)
+    app.run_server(debug=False, port=8095, dev_tools_hot_reload=True)
     # app.run(debug=False) # uncomment this line to run Dash application, and comment otherwise.
 
     '''Run Pywebview application (Production)'''

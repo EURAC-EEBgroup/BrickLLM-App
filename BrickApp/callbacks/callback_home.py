@@ -1,12 +1,17 @@
-from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update, set_props
+from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update, set_props, html, get_relative_path, clientside_callback
 from dash.exceptions import PreventUpdate
-import io
+from dash_iconify import DashIconify
+import dash_mantine_components as dmc
+
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
 from brickllm.graphs import BrickSchemaGraph
+
+import io
 import sys
 import os
 
 log_buffer = io.StringIO()
-
 
 '''
 
@@ -44,6 +49,143 @@ if ttl_output:
         f.write(ttl_output)
 '''
 
+clientside_callback(
+    """
+    function(n_clicks) {
+        var mainDiv = document.getElementById('ontology-container-div');
+        if (mainDiv) {
+            mainDiv.scrollTop = mainDiv.scrollHeight;
+        }
+        return '';
+    }
+    """,
+    Output('scroll-trigger', 'children'),
+    Input('btn_icon_ontology', 'n_clicks'),
+)
+
+# ================================================
+#          CHECK API KEY
+# ================================================
+
+@callback(
+    Output("prompt_command_ontology","disabled"),
+    Output("alert_api_key","hide"),
+    Input("llm_model_type","value"),
+    Input("api-key_value","value")
+)
+def enable_prompt(model_type, api_key):
+    '''
+    if llm model is selected the api-key should be given 
+    '''
+
+    if model_type == "llm_model":
+        if api_key == None or api_key == "":
+            return True, False
+    elif model_type == "local_model":
+        return False, True
+    return False, True
+
+
+
+
+
+# ================================================
+#           STYLE:DISSOLVING ICON RUN
+# ================================================
+'''
+if no value in the prompt the run button desappers
+'''
+style_hide = {
+    'marginTop':'auto', 
+    'bottom':'20',
+    'border':'2px solid black',
+    'color':'black',
+    'padding':'2px',
+    'borderRadius':'40px',
+    'marginRight':'2px',
+    'marginBottom':'2px', 
+    'transition': 'opacity 2s', 
+    'opacity': 0
+}
+style_action_icon_on = {
+    'marginTop':'auto', 
+    'bottom':'20',
+    'border':'2px solid black',
+    'color':'black',
+    'padding':'2px',
+    'borderRadius':'40px',
+    'marginRight':'2px',
+    'marginBottom':'2px',
+    'transition': 'opacity 2s', 
+    'opacity': 1
+}
+
+# @callback(
+#     Output("btn_icon_ontology",'style'),
+#     Input("prompt_command_ontology", 'value'),
+#     prevent_initial_call=True
+# )
+# def hide_run_button(valPrompt):
+#     if valPrompt:
+#         return style_action_icon_on
+#     else:
+#         return style_hide
+
+@callback(
+    Output("btn_icon_ontology",'display'),
+    Input("prompt_command_ontology", 'value'),
+    State("btn_icon_ontology",'display'),
+    prevent_initial_call=True
+)
+def hide_run_button(valPrompt, stateDisplay):
+    if valPrompt and stateDisplay=="none":
+        return True
+    elif valPrompt.strip()=="" and stateDisplay:
+        return "none"
+    raise PreventUpdate
+    
+
+
+# ================================================
+#           STYLE: NIGHT AND DAY 
+# ================================================
+
+@callback(
+    Output('text1',"c"),
+    Output('text2',"c"),
+    # Output('modalText1',"c"),
+    # Output('modalText2',"c"),
+    # Output('llm_model_',"c"),
+    # Output('title_model_upload',"c"),
+    Output('iframe_background_image',"src"),
+    Output('logo_header',"src"),
+    Input("mantine-provider", "forceColorScheme"),
+    # prevent_initial_call=True
+)
+def change_color_style(theme):
+    if theme == 'dark':
+        return "red", "white", "/assets/world-map_dark.html", get_relative_path("/assets/eurac_logo_white_WEB_neg.png"),
+    else:
+        return "grey", "black", "/assets/world-map.html", get_relative_path("/assets/eurac_logo_grey_WEB_pos.png"),
+    
+
+
+# ================================================
+#           FAKE FUNCTION for testing 
+# ================================================
+import time
+import random
+def dummy_simulation():
+    for i in range(30):
+        print(f"asdgasdgasg {i}")
+        time.sleep(1)
+ 
+    return str(time.time()) + str(random.randint)
+
+# ================================================
+#            RUN FUNCTION TO CREATE MODEL 
+# ================================================
+
 class BackgroundBuffer:
     """ Take the contents of stdout during a background callback and put it into dcc.Store. """
     def write(self, message):
@@ -57,11 +199,30 @@ class BackgroundBuffer:
         pass
 
 
+#"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"
+def brick_simulation(text_prompt, api_key_client, model_GPT):
+    # Load environment variables
+    load_dotenv()
+    # Create an instance of BrickSchemaGraph with a custom model
+    custom_model = ChatOpenAI(temperature=0, model=model_GPT, api_key=api_key_client)
+    brick_graph = BrickSchemaGraph(model=custom_model)
+
+    # Run the graph without streaming
+    result = brick_graph.run(
+        prompt=text_prompt,
+        stream=False
+    )
+    print(result)
+    print(result.get('elem_hierarchy', None))
+
+    return result
 
 @callback(
-    Output("simulation_run","children"),
+    # Output("simulation_run","children"),
     Output("ttl-result", "data"),
     Input("btn_icon_ontology","n_clicks"),
+    Input("api-key_value","value"),
+    Input("llm_model_version","value"),
     State("prompt_command_ontology","value"),
     State("ttl-result", "data"),
     background=True,
@@ -74,7 +235,7 @@ class BackgroundBuffer:
     ],
     prevent_initial_call=True
 )
-def run_ontology(btn, text_prompt, ttl_result):
+def run_ontology(btn, apiKey, GPTtype, text_prompt, ttl_result):
     '''
     Run brickllm library to create ontology form prompt
     '''
@@ -90,20 +251,13 @@ def run_ontology(btn, text_prompt, ttl_result):
             log_buffer = BackgroundBuffer()
             sys.stdout = log_buffer
 
-            # Create an instance of BrickSchemaGraph
-            brick_graph = BrickSchemaGraph()
-
-            # Run the graph without streaming
-            result = brick_graph.run(
-                prompt=text_prompt,
-                stream=False
-            )
-
-            print(result)
-            print(result.get('elem_hierarchy', None))
+            
+            result = brick_simulation(text_prompt=text_prompt, api_key_client=apiKey, model_GPT=GPTtype)
 
             ttl_output = result.get('ttl_output', None)
-
+            # ttl_output = dummy_simulation()
+ 
+ 
             # Save the output to a file
             if ttl_output:
                 print(ttl_output)
@@ -116,7 +270,7 @@ def run_ontology(btn, text_prompt, ttl_result):
 
         finally:
             sys.stdout = sys.__stdout__
-            return "", ttl_result
+            return ttl_result
         
     raise PreventUpdate
 
@@ -174,13 +328,10 @@ def update_logs(data):
     return data
 
 
-
 # ==========================================================================================
 #                                   APPEND EACH REQUEST 
 # ==========================================================================================
-import dash_mantine_components as dmc
-from dash import html
-from dash_iconify import DashIconify
+
 def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
     component = html.Div(
         children = [
@@ -190,13 +341,26 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                 children = [
                     dmc.Paper(
                         children = [
+                            input_request,
+                        ],
+                        shadow="lg",
+                        radius="lg",
+                        p="lg",
+                        c="red",
+                        ml=150
+                    ),
+                    dmc.Spoiler(
+                        showLabel="Show more",
+                        hideLabel="Hide",
+                        maxHeight=100,
+                        children=[
                             dmc.Stack(
                                 children = [
-                                    input_request,
                                     dmc.Text(
                                         id='log_output_text',
                                         mt=5,
                                         mb=5,
+                                        c="red",
                                         style={'whiteSpace': 'pre-line'}
                                     ),
                                     dcc.Interval(
@@ -204,28 +368,23 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                                         interval=1000,  # in milliseconds
                                         n_intervals=0  # initial number of intervals
                                     ),
-                                    dmc.Button(
-                                        id={"type": "btn_attachment", "index": n_clicks},
-                                        children = dmc.Text(f"{btn_name_ttl}.ttl", td="underline"),
-                                        leftSection= DashIconify(icon="hugeicons:attachment-square", width=20, color="grey"),
-                                        variant="transparent",
-                                        n_clicks=0,
-                                        disabled=True
-                                    ),
-                                    dcc.Download(id={"type": "download_ttl", "index": n_clicks})
+                                    
                                 ],
                                 align="flex-start"
                             )
                         ],
-                        shadow="lg",
-                        radius="lg",
-                        p="lg",
-                        c="red",                
-                    )
+                    ),
+                    dmc.Button(
+                        id={"type": "btn_attachment", "index": n_clicks},
+                        children = dmc.Text(f"{btn_name_ttl}.ttl", td="underline"),
+                        leftSection= DashIconify(icon="hugeicons:attachment-square", width=20, color="grey"),
+                        variant="transparent",
+                        n_clicks=0,
+                        disabled=True
+                    ),
+                    dcc.Download(id={"type": "download_ttl", "index": n_clicks})
                 ]
-            ),
-           
-
+            )
         ]
     )
     
@@ -234,7 +393,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
 
 
 @callback(
-    Output("ontology-container-div", "children"), 
+    Output("ontology-container-div", "children"),
     Input("btn_icon_ontology", "n_clicks"),
     # Input("log-output-interval", "n_intervals"),
     State("prompt_command_ontology","value"),

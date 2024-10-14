@@ -39,10 +39,10 @@ body {
     }
 } */
 
-.m_5a7c2c9 {
+/* .m_5a7c2c9 {
   margin-top: 40px;
   margin-right:10px
-}
+} */
 
 #building_typ_description .heading__2:after{
   background-color: rgb(232, 95, 91)
@@ -1769,12 +1769,24 @@ th {
   margin-bottom: 20px !important;
 }
 
+#prompt_command_ontology {
+  background-color: transparent;
+  font-size: 16px;
+  color: black;
+  border:0px
+}
 
+/* #ontology-container-div {
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  flex-shrink: 1!important;
+  flex-basis: 0% !important;
+} */
 /* .m_17da7e62{
   display: flex !important;
   margin: 5px !important;
 } */
-
+ 
 /* .m_847eaf{
   display: flex !important;
   justify-content: end !important;

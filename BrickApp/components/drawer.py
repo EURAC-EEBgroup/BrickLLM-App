@@ -1,96 +1,92 @@
 from dash import html, dcc
 import  dash_mantine_components as dmc
+from dash_iconify import DashIconify
 
 
-
-data_llm = [["openai", "OpenAI"], ["anthropic", "Anthropic"], ["fireworks", "Fireworks"]]
 data_llm_local = [["lama", "Lama"], ["a", "..."], ["b", "..."]]
 layout_ = dmc.Container(
     children = [
-        dmc.Paper(
-            children = [
-                dmc.Title("Model:", lh=1.2, order=2, mt="xs", fw=900, c="#e12024"),
-                dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20, w="0%"),
-                dmc.SegmentedControl(
-                    id="llm_model_type",
-                    value="llm_model",
-                    data=[
-                        {"value": "llm_model", "label": "LLM"},
-                        {"value": "local_model", "label": "Local LLM"}
-                    ],
-                    mb=10,
-                    mt=20,
-                    fullWidth=True,
-                    style = {'width':'100%'}
-                ),
-                # dmc.Paper(
-                #     children = [
-                        
-                #     ],
-                #     radius="lg",
-                #     p=10,
-                #     # m=5,
-                #     w="100%",
-                #     bg="#cccccc"
-                # ),
-                dmc.Title("Select type of LLM", lh=1.2, order=3, mt="xs", fw=900, c="black"),
-                # dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20),
-                # html.Div(id="type_model_selection"),
-                dmc.RadioGroup(
-                    id="llm_model_",
-                    children=dmc.Group([dmc.Radio(l, value=k) for k, l in data_llm], my=10),
-                    value="openai",
-                    label="Select your favorite large language model",
-                    size="md",
-                    w="100%"
-                ),                
-                dmc.RadioGroup(
-                    id="llm_local_model",
-                    children=dmc.Group([dmc.Radio(l, value=k) for k, l in data_llm_local], my=10),
-                    value="lama",
-                    label="Select your local large language model",
-                    size="md",
-                    w="100%"
-                ),  
-                dmc.Title(id="title_model_upload", children = "Upload your model", order=4, mb=20),
-                dcc.Upload(
-                    id='upload_llm_local_model',
-                    children=dmc.Text(['Drag and Drop or ',html.A('Select Files')]),
-                    style={"width":"100%"},
-                    # Allow multiple files to be uploaded
-                    multiple=True
-                ),
-                html.Div(
-                    id="titles_token",
-                    children = [
-                        dmc.Title("TOKEN", lh=1.2, order=3, mt="xs", fw=900, c="black"),
-                        dmc.Title("Provide your own token to use the LLM API", c="grey", opacity=0.7, fw=700, size="md",mt=5),
-                    ]
-                ),
-                dmc.Textarea("sk-example-1234567890abcdef1234567890abcdef",id="area_token", w='100%', mt=20, placeholder=""),
-                dmc.Divider(variant="solid",size="lg", mt=20, color="grey", pt=20, pl=20, pr=20, w="100%"),
-                dmc.Button(
-                    id="btn_confirm_model",
-                    children = "CONFIRM",
-                    fullWidth=True,
-                    radius="lg",
-                    style = {'backgroundColor':'#e12024'},
-                    mt=10
-                ),
+        # dmc.Title("Model:", lh=1.2, order=2, mt="xs", fw=900, c="#e12024"),
+        # dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20, w="0%"),
+        dmc.Title("Type of LLM",id="modalText1",lh=1.2, order=3, mt="xs", fw=900),
+        
+        dmc.SegmentedControl(
+            id="llm_model_type",
+            value="llm_model",
+            data=[
+                {"value": "llm_model", "label": "LLM"},
+                {"value": "local_model", "label": "Local LLM"}
             ],
-            p="xl",
-            mt= 10,
-            mb= 10,
-            radius="md",
-            style={
-                "backgroundColor":'white',
-                "display": "flex",
-                "flexDirection": "column",
-                "justifyContent": "space-between",
-                "alignItems": "flex-start",
-                "backgroundSize": "cover",
-                "backgroundPosition": "center",
-            },
+            mb=10,
+            mt=20,
+            fullWidth=True,
+            style = {'width':'100%'},
+            radius="xl",
+            c='red'
+        ),
+        dmc.Select(
+            id="llm_model_",
+            label=dmc.Text(id="modalText2",children = "Select your favorite large language model"),
+            data=[
+                {'value':"openai","label":"OpenAI"},
+                {'value':"anthropic","label":"Anthropic"},
+                {'value':"fireworks","label":"Fireworks"},
+            ],
+            value="openai",
+            radius="lg",
+            placeholder="Pick values",
+            leftSectionPointerEvents="none",
+            leftSection=DashIconify(icon="fluent:brain-circuit-20-regular"),
+            comboboxProps={"shadow": "lg","transitionProps": { "transition": 'pop', "duration": 200 }},
+            style = {'color':'white'}
+        ),
+        dmc.Select(
+            id="llm_model_version",
+            label=dmc.Text(id="modalText3",children = "Select GPT model"),
+            radius="lg",
+            data = [
+                {'value':"gpt-4o", "label": "GPT 4o"},
+                {'value':"gpt-4", "label": "GPT 4"},
+            ],
+            value = "gpt-4o",
+            placeholder="Pick values",
+            leftSectionPointerEvents="none",
+            leftSection=DashIconify(icon="fluent:brain-circuit-20-regular"),
+            comboboxProps={"shadow": "lg","transitionProps": { "transition": 'pop', "duration": 200 }},
+            style = {'color':'white'}
+        ),
+        dmc.Select(
+            id="llm_model_local_huggin",
+            label=dmc.Text(id="modalText3",children = "Available local trained model:"),
+            data=[
+                {'value':"model1Huggin","label":"Ollama_1"},
+                {'value':"model2Huggin","label":"Ollama_2"},
+                {'value':"model3Huggin","label":"Ollama_3"},
+            ],
+            value="model1Huggin",
+            radius="lg",
+            placeholder="Local trained models",
+            leftSectionPointerEvents="none",
+            leftSection=DashIconify(icon="octicon:ai-model-24"),
+            comboboxProps={"shadow": "lg","transitionProps": { "transition": 'pop', "duration": 200 }},
+            mt=10
+        ),
+        dmc.TextInput(
+            id="api-key_value",
+            label = dmc.Text("API KEY:",id="text1", opacity=0.7, fw=700),
+            placeholder = "exeample: sk-example-1234567890abcdef1234567890abcdef",
+            leftSection=DashIconify(icon="carbon:api-key"),
+            mt=10,
+            radius="lg",
+            persistence=True,
+            persistence_type="session",
+            c="red"
+        ),
+            
+        dmc.Divider(variant="solid",size="lg", mt=20, color="grey", pt=20, pl=20, pr=20, w="100%"),
+
+        dmc.Button(
+            id="confirm_model", children = "CONFIRM", fullWidth=True, radius="lg", style = {'backgroundColor':'red', "color":"white"}
         )
     ]
 )
@@ -98,7 +94,13 @@ layout_ = dmc.Container(
 Drawer = dmc.Drawer(
     id="drawer-simple",
     padding="md",
-    size="40%",
+    size="30%",
+    title = dmc.Stack(
+        children = [
+            dmc.Title("Model", lh=1.2, order=2, mt="xs", fw=900, c="#e12024"),
+            dmc.Divider(variant = "solid", size="lg", mt=5, color="grey", pt=20, pl=20, pr=20, w="0%")
+            ]
+    ),
     position="right",
     children = [
         layout_

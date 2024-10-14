@@ -7,8 +7,24 @@ Header = dmc.AppShellHeader(
     h=80,
     p=20,
 children = [
+        
         dmc.Group(
             children = [
+                dcc.Link(
+                    id="link_eurac5",
+                    children = [
+                        dmc.Anchor(
+                            href = "www.eurac.edu",
+                            children = [
+                                dmc.Image(
+                                    id="logo_header",
+                                    h=50,
+                                )
+                            ]
+                        )
+                    ],
+                    href = "www.eurac.edu",
+                ),
                 DashIconify(icon="", width=100),
                 dmc.ActionIcon(
                     [
@@ -21,11 +37,21 @@ children = [
                     size="lg",
                     ms="auto",
                 ),
+                dmc.Anchor(
+                    dmc.ActionIcon(
+                        id="github",
+                        children = DashIconify(icon="akar-icons:github-fill", width=25),
+                        variant="transparent",
+                        style = {'color':'#e12024'}, 
+                    ),
+                    href = "https://github.com/EURAC-EEBgroup/brick-llm/tree/main",
+                    target="_blank"
+                ),
                 dmc.ActionIcon(
                     id="setting",
-                    children = DashIconify(icon="clarity:settings-line", width=25),
+                    children = DashIconify(icon="lets-icons:setting-fill", width=30),
                     variant="transparent",
-                    style = {'color':'#e12024'}, 
+                    style = {'color':'#e12024','marginBottom':'5px'}, 
                 )
             ],
             justify="space-between"
