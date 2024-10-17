@@ -30,6 +30,9 @@ def add_card(btn):
     index = btn
     patched_children = Patch()
     card = get_card(index)
-    patched_children.insert(0, card)
+    patched_children.insert(btn, card)
+    # patched_children.append(card)
+    # patched_children.reverse()
+
 
     return patched_children

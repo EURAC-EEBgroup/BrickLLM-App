@@ -5,11 +5,15 @@ import os
 import webview
 from dash import Dash, DiskcacheManager, CeleryManager, Input, Output, html, callback
 import celery
-from components.footer import Footer
+from components.footer import Footer, footer_2, footer_1
+from components.sidebar import Sidebar
 from dash_iconify import DashIconify
+from flask import Flask 
+
 
 # dash mantine components >= 14.0.1 requires React 18+
 dash._dash_renderer._set_react_version("18.2.0")
+# server = Flask(__name__, root_path=DASH_RELATIVE_PATH)
  
 if 'REDIS_URL' in os.environ:
     # Use Redis & Celery if REDIS_URL set as an env variable
@@ -27,12 +31,15 @@ else:
 app = Dash(
     __name__, 
     use_pages=True,
+    # server=server,
     assets_folder='assets',  
-    title="Brick LLM",
+    title="Brick-LLM",
     suppress_callback_exceptions=True,
     background_callback_manager=background_callback_manager,
     external_stylesheets=dmc.styles.ALL,
+    # requests_pathname_prefix='/brick_llm/'
 )
+
 
 server = app.server
 server.config.update(
@@ -46,7 +53,7 @@ from callbacks import (callback_header, callback_settings, callback_home, callba
 
 app.layout = dmc.MantineProvider(
     id="mantine-provider",
-    forceColorScheme='dark',
+    forceColorScheme='light',
     children=[
         dmc.NotificationProvider(),
         html.Div(id='notifiaction-wrap'),
@@ -63,9 +70,17 @@ app.layout = dmc.MantineProvider(
                 dmc.AppShellMain(
                     dash.page_container
                 ),
+                # footer_2,
+                # footer_1,
                 Footer,
+                # Sidebar
             ],
             padding="xl",
+            aside={
+                "width": 300,
+                "breakpoint": "xl",
+                "collapsed": {"desktop": False, "mobile": True},
+            },
         )
     ]
 )
@@ -93,7 +108,7 @@ def run_native_dash_app(dash_app: Dash, window_title: str = None) -> None:
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=True, port=8095, dev_tools_hot_reload=True)
+    app.run_server(debug=True, port=8097, dev_tools_hot_reload=True)
     # app.run(debug=False) # uncomment this line to run Dash application, and comment otherwise.
 
     '''Run Pywebview application (Production)'''

@@ -1,4 +1,4 @@
-from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update, set_props, html, get_relative_path, clientside_callback
+from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, no_update, set_props, html, clientside_callback, ClientsideFunction, get_relative_path
 from dash.exceptions import PreventUpdate
 from dash_iconify import DashIconify
 import dash_mantine_components as dmc
@@ -49,44 +49,90 @@ if ttl_output:
         f.write(ttl_output)
 '''
 
+# clientside_callback(
+#     """
+#     function(n_clicks) {
+#         var mainDiv = document.getElementById('ontology-container-div');
+#         if (mainDiv) {
+#             mainDiv.scrollTop = mainDiv.scrollHeight;
+#         }
+#         return '';
+#     }
+#     """,
+#     Output('scroll-trigger', 'children'),
+#     Input('btn_icon_ontology', 'n_clicks'),
+# )
 clientside_callback(
     """
-    function(n_clicks) {
-        var mainDiv = document.getElementById('ontology-container-div');
-        if (mainDiv) {
-            mainDiv.scrollTop = mainDiv.scrollHeight;
-        }
-        return '';
+    function(value) {
+        var textarea = document.getElementById('prompt_command_ontology');
+        textarea.style.height = 'auto';  // Reset height to auto to recalculate
+        textarea.style.height = textarea.scrollHeight + 'px';  // Set height to scrollHeight
+        return value;  // Return the value to keep the callback functional
     }
     """,
-    Output('scroll-trigger', 'children'),
-    Input('btn_icon_ontology', 'n_clicks'),
+    Output('prompt_command_ontology', 'value'),
+    Input('prompt_command_ontology', 'value')
+)
+
+
+clientside_callback(
+    """
+    function updateLoadingState(n_clicks) {
+        return true
+    }
+    """,
+    Output("loading-overlay", "visible", allow_duplicate=True),
+    Input("load-button", "n_clicks"),
+    prevent_initial_call=True,
 )
 
 # ================================================
 #          CHECK API KEY
 # ================================================
+@callback(
+    Output("llm_model_type","disabled"),
+    Output("llm_model_","disabled"),
+    Output("llm_model_version","disabled"),
+    Output("api-key_value","disabled"),
+    Input("btn_confirm_model","checked"),
+    State("llm_model_type","value"),
+)
+def block_selection(btn, model_selection):
+    if btn:
+    # if ctx.triggered_id == "btn_confirm_model":
+        if model_selection == "llm_model":
+            return True, True, True, True
+        return False, False, False, False
+    return False, False, False, False
+
 
 @callback(
     Output("prompt_command_ontology","disabled"),
     Output("alert_api_key","hide"),
-    Input("llm_model_type","value"),
-    Input("api-key_value","value")
+    Output("btn_icon_ontology","disabled"),
+    # Output("prompt_command_ontology","style"),
+    Output("prompt_flex","className"),
+    Output("btn_icon_ontology","className"),
+    Input("btn_confirm_model","checked"),
+    State("llm_model_type","value"),
+    State("api-key_value","value")
 )
-def enable_prompt(model_type, api_key):
+def enable_prompt(btn, model_type, api_key):
     '''
     if llm model is selected the api-key should be given 
     '''
-
-    if model_type == "llm_model":
-        if api_key == None or api_key == "":
-            return True, False
-    elif model_type == "local_model":
-        return False, True
-    return False, True
-
-
-
+    # style_disabled ={'backgroundColor':'#A9A9A9'}
+    # style_not_disabled ={'backgroundColor':'#eeeeee'}
+    if btn :
+        if model_type == "llm_model":
+            if api_key == None or api_key == "":
+                return True, False, True,"promtp_flex_disabled", "icon_run_disabled_style"
+        elif model_type == "local_model":
+            return False, True, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
+        return False, True, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
+    else:
+        return True, False, True,"promtp_flex_disabled", "icon_run_disabled_style"
 
 
 # ================================================
@@ -142,7 +188,8 @@ def hide_run_button(valPrompt, stateDisplay):
         return True
     elif valPrompt.strip()=="" and stateDisplay:
         return "none"
-    raise PreventUpdate
+    else: 
+        PreventUpdate
     
 
 
@@ -150,23 +197,25 @@ def hide_run_button(valPrompt, stateDisplay):
 #           STYLE: NIGHT AND DAY 
 # ================================================
 
-@callback(
-    Output('text1',"c"),
-    Output('text2',"c"),
-    # Output('modalText1',"c"),
-    # Output('modalText2',"c"),
-    # Output('llm_model_',"c"),
-    # Output('title_model_upload',"c"),
-    Output('iframe_background_image',"src"),
-    Output('logo_header',"src"),
-    Input("mantine-provider", "forceColorScheme"),
-    # prevent_initial_call=True
-)
-def change_color_style(theme):
-    if theme == 'dark':
-        return "red", "white", "/assets/world-map_dark.html", get_relative_path("/assets/eurac_logo_white_WEB_neg.png"),
-    else:
-        return "grey", "black", "/assets/world-map.html", get_relative_path("/assets/eurac_logo_grey_WEB_pos.png"),
+# @callback(
+#     Output('modalText1',"c"),
+#     Output('sidebarText2',"c"),
+#     Output('sidebarText3',"c"),
+#     Output('sidebarText4',"c"),
+#     Output('sidebarText5',"c"),
+#     Output('confirmSelection',"c"),
+    
+#     # Output('title_model_upload',"c"),
+#     # Output('iframe_background_image',"src"),
+#     Output('logo_header',"src"),
+#     Input("mantine-provider", "forceColorScheme"),
+#     # prevent_initial_call=True
+# )
+# def change_color_style(theme):
+#     if theme == 'dark':
+#         return "white","white","white","white","white","white","/assets/world-map_dark.html", get_relative_path("/assets/eurac_logo_white_WEB_neg.png"),
+#     else:
+#         return "black", "black","black", "black","black","black","/assets/world-map.html", get_relative_path("/assets/eurac_logo_grey_WEB_pos.png"),
     
 
 
@@ -221,10 +270,10 @@ def brick_simulation(text_prompt, api_key_client, model_GPT):
     # Output("simulation_run","children"),
     Output("ttl-result", "data"),
     Input("btn_icon_ontology","n_clicks"),
-    Input("api-key_value","value"),
-    Input("llm_model_version","value"),
     State("prompt_command_ontology","value"),
     State("ttl-result", "data"),
+    State("api-key_value","value"),
+    State("llm_model_version","value"),
     background=True,
     running=[
         (Output("btn_icon_ontology", "display"), "none", True),
@@ -235,7 +284,7 @@ def brick_simulation(text_prompt, api_key_client, model_GPT):
     ],
     prevent_initial_call=True
 )
-def run_ontology(btn, apiKey, GPTtype, text_prompt, ttl_result):
+def run_ontology(btn, text_prompt, ttl_result, apiKey, GPTtype,):
     '''
     Run brickllm library to create ontology form prompt
     '''
@@ -319,35 +368,74 @@ def clear_old_logs(btn):
     return ""
 
 
+
 @callback(
-    Output("log_output_text", "children"),
+    # Output("log_output_text", "children"),
+    Output({'type':"log_output_text", 'index':MATCH}, "children"),
     Input("log-output-store", "data"),
+    # Input('log-output-interval', 'n_intervals')
 )
 def update_logs(data):
-
     return data
+    # return displayed_text
 
+# @callback(
+#     Output("log_output_text", "children"),
+#     [Input("log-output-interval", "n_intervals")],
+#     [State("log-output-store", "data"),
+#      State("log_output_text", "children")]
+# )
+# def update_logs(n_intervals, data, current_text):
+#     if not data:
+#         raise PreventUpdate
+    
+#     # Check if all text has been displayed
+#     if current_text is None:
+#         current_text = ""
+
+#     # Determine how many characters to display
+#     length = len(current_text)
+    
+# #     if length >= len(data):
+# #         raise PreventUpdate  # Stop updating if all text is displayed
+
+#     # Add the next character
+#     next_character = data[length]  # Get the next character to display
+#     return current_text + next_character
 
 # ==========================================================================================
 #                                   APPEND EACH REQUEST 
 # ==========================================================================================
 
-def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
+def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index):
     component = html.Div(
+        id={"type": "card", "index": index},
         children = [
             dmc.ScrollArea( 
-                type="hover",       
+                type="never",       
                 h=250,w='100%',
                 children = [
-                    dmc.Paper(
+                    dmc.Flex(
                         children = [
-                            input_request,
+                            dmc.ThemeIcon(
+                                children = DashIconify(icon="humbleicons:user-asking", width=45),
+                                radius = "lg",
+                                variant= "outline",
+                                color="black",
+                                style = {'border':"1px solid lightgrey"},
+                                size="lg"
+                            ),
+                            dmc.Paper(
+                                id="text_prompt_question",
+                                children = [
+                                    input_request,
+                                ],
+                                shadow="lg",
+                                radius="lg",
+                                p="lg",
+                            ),
                         ],
-                        shadow="lg",
-                        radius="lg",
-                        p="lg",
-                        c="red",
-                        ml=150
+                        gap={"base": "sm", "sm": "lg"},
                     ),
                     dmc.Spoiler(
                         showLabel="Show more",
@@ -357,32 +445,43 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
                             dmc.Stack(
                                 children = [
                                     dmc.Text(
-                                        id='log_output_text',
+                                        id={'type':'log_output_text', 'index':index},
+                                        # id='log_output_text',
                                         mt=5,
                                         mb=5,
-                                        c="red",
+                                        c="black",
                                         style={'whiteSpace': 'pre-line'}
                                     ),
-                                    dcc.Interval(
-                                        id='log-output-interval',
-                                        interval=1000,  # in milliseconds
-                                        n_intervals=0  # initial number of intervals
+                                    dmc.Button(
+                                        id={"type": "btn_attachment", "index": n_clicks},
+                                        children = dmc.Text(f"{btn_name_ttl}.ttl", td="underline"),
+                                        leftSection= DashIconify(icon="hugeicons:attachment-square", width=20, color="grey"),
+                                        variant="transparent",
+                                        n_clicks=0,
+                                        disabled=True
                                     ),
+                                    dcc.Download(id={"type": "download_ttl", "index": n_clicks})
+                                    # dcc.Interval(id='log-output-interval-text', interval=100, n_intervals=0),
+                                    # dcc.Interval(
+                                    #     id='log-output-interval',
+                                    #     interval=100,  # in milliseconds
+                                    #     n_intervals=0  # initial number of intervals
+                                    # ),
                                     
                                 ],
                                 align="flex-start"
                             )
                         ],
+                        style = {
+                            "backgroundColor": "white",
+                            "borderRadius": "20px",
+                            "marginTop": "10px",
+                            "padding": "20px",
+                            "boxShadow": "0 8px 16px rgba(0, 0, 0, 0.2)",
+                            "marginLeft": "5px"
+                            }
                     ),
-                    dmc.Button(
-                        id={"type": "btn_attachment", "index": n_clicks},
-                        children = dmc.Text(f"{btn_name_ttl}.ttl", td="underline"),
-                        leftSection= DashIconify(icon="hugeicons:attachment-square", width=20, color="grey"),
-                        variant="transparent",
-                        n_clicks=0,
-                        disabled=True
-                    ),
-                    dcc.Download(id={"type": "download_ttl", "index": n_clicks})
+                    
                 ]
             )
         ]
@@ -392,36 +491,25 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks):
     return component
 
 
+
+
+
 @callback(
     Output("ontology-container-div", "children"),
     Input("btn_icon_ontology", "n_clicks"),
-    # Input("log-output-interval", "n_intervals"),
     State("prompt_command_ontology","value"),
-    # prevent_initial_call=True
 )
-def display_dropdowns(n_clicks, prompt_text):
+def display_dropdowns(btn_clicks, prompt_text):
+    if btn_clicks is None: 
+        raise PreventUpdate
+
+    index = btn_clicks    
     patched_children = Patch()
-    if ctx.triggered_id == "btn_icon_ontology":
-        text_to_append = text_element_with_file(prompt_text, f"brick_{n_clicks}", n_clicks)
-        patched_children.append(text_to_append)
+    text_to_append = text_element_with_file(prompt_text, f"brick_{btn_clicks}", btn_clicks, index)
+    patched_children.insert(0,text_to_append)
 
-        # patched_children_logs = Patch()       
-        # log_buffer.seek(0)
-        # logs = log_buffer.read()
-        # logs_paper = dmc.Paper(
-        #     children = logs,
-        #     shadow="lg",
-        #     radius="lg",
-        #     p="lg",
-        #     mt=10,
-        #     c="green",
-        #     h=200
-        # )
-        # patched_children.append(logs_paper)
-        return patched_children
-    raise PreventUpdate
-
-
+    return patched_children
+    
 #                                   SAVE TTL FILE AND MAKE AVAILABLE 
 # ==========================================================================================
 
@@ -453,3 +541,12 @@ def update_buttons_state(btn, ids):
 
     btns = [0] * len(ids)
     return btns
+
+# @callback(
+#     Output("sidebar_","display"),
+#     Input("url_app","href")
+# )
+# def visualize_sidebar(href):
+#     if href == "http://127.0.0.1:8097/contact":
+#         return "none"
+#     return True

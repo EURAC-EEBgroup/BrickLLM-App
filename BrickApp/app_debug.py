@@ -5,7 +5,9 @@ import os
 import webview
 from dash import Dash, DiskcacheManager, CeleryManager, Input, Output, html, callback
 import celery
-from components.footer import Footer
+from components.footer import Footer, footer_2, footer_1
+from components.sidebar import Sidebar
+from dash_iconify import DashIconify
 
 
 # dash mantine components >= 14.0.1 requires React 18+
@@ -30,8 +32,8 @@ app = Dash(
     assets_folder='assets',  
     title="Brick LLM",
     suppress_callback_exceptions=True,
-    background_callback_manager=background_callback_manager
-    # external_stylesheets=dmc.styles.ALL,
+    background_callback_manager=background_callback_manager,
+    external_stylesheets=dmc.styles.ALL,
 )
 
 server = app.server
@@ -46,7 +48,7 @@ from callbacks import (callback_header, callback_settings, callback_home, callba
 
 app.layout = dmc.MantineProvider(
     id="mantine-provider",
-    forceColorScheme='dark',
+    forceColorScheme='light',
     children=[
         dmc.NotificationProvider(),
         html.Div(id='notifiaction-wrap'),
@@ -60,12 +62,20 @@ app.layout = dmc.MantineProvider(
             children=[
                 Header,
                 Drawer,
-                Footer,
                 dmc.AppShellMain(
                     dash.page_container
                 ),
+                # footer_2,
+                # footer_1,
+                Footer,
+                Sidebar
             ],
             padding="xl",
+            aside={
+                "width": 300,
+                "breakpoint": "xl",
+                "collapsed": {"desktop": False, "mobile": True},
+            },
         )
     ]
 )
@@ -93,7 +103,7 @@ def run_native_dash_app(dash_app: Dash, window_title: str = None) -> None:
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=False, port=8095, dev_tools_hot_reload=True)
+    app.run_server(debug=False, port=8097, dev_tools_hot_reload=False)
     # app.run(debug=False) # uncomment this line to run Dash application, and comment otherwise.
 
     '''Run Pywebview application (Production)'''

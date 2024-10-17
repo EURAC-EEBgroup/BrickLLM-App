@@ -35,19 +35,20 @@ style_drag_drop ={
 #         return display_off, style_drag_drop, display_on, display_off, display_off
 
 
-@callback(
-    Output("drawer-simple", "opened"),
-    Input("setting", "n_clicks"),
-    prevent_initial_call=True,
-)
-def drawer_demo(n_clicks):
-    return True
+# @callback(
+#     Output("drawer-simple", "opened"),
+#     Input("setting", "n_clicks"),
+#     prevent_initial_call=True,
+# )
+# def drawer_demo(n_clicks):
+#     return True
 
 
 @callback(
     Output("llm_model_", "data"),
     Output("llm_model_", "value"),
     Output("llm_model_local_huggin","display"),
+    Output("llm_model_version","display"),
     Output("api-key_value","display"),
     Input("llm_model_type","value")
 )
@@ -61,6 +62,7 @@ def types_of_llm_to_be_used(llm_selected):
         value="openai"
         hug_models = "none"
         api_key = True
+        model_version=True
     else: 
         data = [
             {'value':'ollama', 'label':'Ollama 3.1'}
@@ -68,16 +70,17 @@ def types_of_llm_to_be_used(llm_selected):
         value="ollama"
         hug_models = True,
         api_key = "none"
-    return data, value, hug_models, api_key
+        model_version="none"
+    return data, value, hug_models, model_version, api_key
 
-@callback(
-    Output("llm_model_version","display"),
-    Input("llm_model_","value"),
-)
-def display_options(llModel):
-    if llModel == "openai":
-        return True
-    return "none"
+# @callback(
+#     Output("llm_model_version","display"),
+#     Input("llm_model_","value"),
+# )
+# def display_options(llModel):
+#     if llModel == "openai":
+#         return True
+#     return "none"
 
 # @callback(
 #     Output("llm_model_version","data"),

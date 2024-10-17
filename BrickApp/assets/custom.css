@@ -1749,12 +1749,27 @@ th {
   background-color: #eeeeee;
 }
 
-#prompt_flex {
+/* #prompt_flex {
   border: 0px solid #eeeeee;
   border-radius: 20px;
   padding: 5px 10px 5px 10px;
   background-color: #eeeeee;
+} */
+
+.promtp_flex_disabled {
+  order: 0px solid #eeeeee;
+  border-radius: 20px;
+  padding: 5px 10px 5px 10px;
+  background-color: #A9A9A9;
 }
+
+.promtp_flex_not_disabled {
+  order: 0px solid #eeeeee;
+  border-radius: 20px;
+  padding: 5px 10px 5px 10px;
+  background-color: #eeeeee;
+}
+
 
 .m_4081bf90{
   justify-content: space-evenly ;
@@ -1773,7 +1788,14 @@ th {
   background-color: transparent;
   font-size: 16px;
   color: black;
-  border:0px
+  border:0px;
+  resize: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  outline: none;
+  height: 20vh !important;
+  max-height: 20vh !important;
+  width: 100%;
 }
 
 /* #ontology-container-div {
@@ -1832,28 +1854,62 @@ th {
   font-size: smaller;
 } */
 
-
-#first-child {
-  background-color: pink;
+#ontology-container-div {
+  background-color: transparent;
   display: flex;
   flex-direction: column-reverse;
 }
 
-#second-child {
-  background-color: orange;
-  height: 170px;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+@media (min-width: 551px) {
+
+  #first-child-wrap {
+    max-height: calc(100vh - 68vh);
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: transparent;
+  }
 }
 
-#first-child-wrap {
-  max-height: 400px;
-  overflow: scroll;
-  display: flex;
-  flex-direction: column-reverse;
+@media (min-width: 992px) {
+
+  #first-child-wrap {
+    max-height: calc(100vh - 60vh);
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: transparent;
+  }
+}
+#text_prompt_question {
+  background-color: rgb(6, 157, 201);
+  color: white;
 }
 
 .single_test_card {
   margin: 1rem;
+}
+
+.icon_run_disabled_style {
+  margin: auto;
+  bottom: 20;
+  border:2px solid #D3D3D3;
+  color:#D3D3D3;
+  padding: 2px;
+  border-radius: 40px;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  background-color: #D3D3D3;
+}
+
+.icon_run_not_disabled_style {
+  margin: auto;
+  bottom: 20;
+  border:2px solid black;
+  color:black;
+  padding: 2px;
+  border-radius: 40px;
+  margin-right: 2px;
+  margin-bottom: 2px;
+  background-color: black;
 }
