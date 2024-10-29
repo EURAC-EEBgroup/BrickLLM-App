@@ -2,6 +2,7 @@ from dash import Output, Input, State, ctx, callback, dcc,  ALL, Patch, MATCH, n
 from dash.exceptions import PreventUpdate
 from dash_iconify import DashIconify
 import dash_mantine_components as dmc
+import dash
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -512,14 +513,20 @@ def clear_old_logs(btn):
 
 
 @callback(
-    # Output("log_output_text", "children"),
-    Output({'type':"log_output_text", 'index':MATCH}, "children"),
+    Output({'type':"log_output_text", 'index':ALL}, "children"),
     Input("log-output-store", "data"),
-    # Input('log-output-interval', 'n_intervals')
+    State({'type':"log_output_text", 'index':ALL}, "id"),
 )
-def update_logs(data):
-    return data
-    # return displayed_text
+def update_logs(data, ids):
+    if ids == []: 
+        raise PreventUpdate
+    
+    children = [dash.no_update] * len(ids)
+    children[0] = data
+    
+    return children
+
+
 
 # @callback(
 #     Output("log_output_text", "children"),
