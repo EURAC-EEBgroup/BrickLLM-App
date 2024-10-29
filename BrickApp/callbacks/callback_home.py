@@ -5,7 +5,8 @@ import dash_mantine_components as dmc
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from brickllm.graphs import BrickSchemaGraph
+from brickllm.graphs import BrickSchemaGraph, BrickSchemaGraphLocal
+
 
 import io
 import sys
@@ -49,19 +50,7 @@ if ttl_output:
         f.write(ttl_output)
 '''
 
-# clientside_callback(
-#     """
-#     function(n_clicks) {
-#         var mainDiv = document.getElementById('ontology-container-div');
-#         if (mainDiv) {
-#             mainDiv.scrollTop = mainDiv.scrollHeight;
-#         }
-#         return '';
-#     }
-#     """,
-#     Output('scroll-trigger', 'children'),
-#     Input('btn_icon_ontology', 'n_clicks'),
-# )
+
 clientside_callback(
     """
     function(value) {
@@ -87,31 +76,101 @@ clientside_callback(
     prevent_initial_call=True,
 )
 
+ # NOTIFICATION MISSING API
+notification_text = dmc.Notification(
+        title=dmc.Text("Hey there!",c="red",size="lg"),
+        id="simple-notify",
+        action="show",
+        message=dmc.Text("Provide the API key of the LLM to be used for generating the ontological model using the Brick schema). If a local model is selected, the API key is not necessary.",c="black"),
+        icon=DashIconify(icon="iconamoon:attention-circle-duotone", color="white",width=45),
+        radius="xl",
+        style = {'backgroundColor':'white', 'border':'1px solid #0F4881'},
+        closeButtonProps = {'color':'white'},
+        w='100%'
+        # variant = "filled"
+    )
+@callback(
+    Output("notifications-container", "children"),
+    Input("btn_confirm_model","checked"),
+    State("llm_model_type","value"),
+    State("api-key_value","value"),
+    prevent_initial_call=True,
+)
+def show(btn, model_type, api_key):
+    if btn :
+        if model_type == "llm_model":
+            if api_key == None or api_key == "":
+                return notification_text
+    # else:
+    #     if model_type == "llm_model":
+    #         if api_key != None or api_key != "":
+    #     return notification_text
+
+
+# ======
+'''Text Warning time for local model'''
+@callback(
+    Output("local_warning_time","children"),
+    Input("llm_model_type","value")
+)
+def text_time_warning(model_):
+    '''
+    Text local warning time if model selection is local. 
+    It requires time to generate ttl
+    '''
+    childrenT = "The generation of the ontology model using LLM may take some time even more than 5 minutes depending on the request. We are working to reduce this problem. We apologize for the inconvenience."
+    if model_ == "local_model":        
+        child = html.Div(
+            [
+            dmc.Group(
+                [
+                    DashIconify(icon="material-symbols:construction", width=30),
+                    dmc.Text("UNDER CONSTRUCTION", size="lg", c="rgb(223 27 18)"),
+                    
+                ]
+            ),
+            dmc.Divider(variant="solid", color="grey", size="lg"),
+            dmc.Text(childrenT, id="warning_class_time", opacity = 0.9, mt=10, style = {'textAlign':'justify'})
+            ],
+           style = {
+                "border":"1px solid grey",
+                "border-radius": "20px",
+                "transition": "boxShadow 0.3s ease",
+                "box-shadow": "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                "padding": "20px",
+                "margin-top": "10px",
+            }
+        )
+        return child
+    else:
+        return  ""
+# ======
+
 # ================================================
 #          CHECK API KEY
 # ================================================
+
+# ======
+''' DISABLED MODEL SELECTION IF LLM LOCAL MODEL HAS CHOSEN'''
+
 @callback(
     Output("llm_model_type","disabled"),
     Output("llm_model_","disabled"),
     Output("llm_model_version","disabled"),
     Output("api-key_value","disabled"),
+    Output("llm_model_local_huggin","disabled"),
     Input("btn_confirm_model","checked"),
-    State("llm_model_type","value"),
 )
-def block_selection(btn, model_selection):
+def block_selection(btn):
     if btn:
-    # if ctx.triggered_id == "btn_confirm_model":
-        if model_selection == "llm_model":
-            return True, True, True, True
-        return False, False, False, False
-    return False, False, False, False
+        return True, True, True, True, True
+    return False, False, False, False, False, 
+    
 
 
 @callback(
     Output("prompt_command_ontology","disabled"),
-    Output("alert_api_key","hide"),
     Output("btn_icon_ontology","disabled"),
-    # Output("prompt_command_ontology","style"),
     Output("prompt_flex","className"),
     Output("btn_icon_ontology","className"),
     Input("btn_confirm_model","checked"),
@@ -122,17 +181,16 @@ def enable_prompt(btn, model_type, api_key):
     '''
     if llm model is selected the api-key should be given 
     '''
-    # style_disabled ={'backgroundColor':'#A9A9A9'}
-    # style_not_disabled ={'backgroundColor':'#eeeeee'}
+
     if btn :
         if model_type == "llm_model":
             if api_key == None or api_key == "":
-                return True, False, True,"promtp_flex_disabled", "icon_run_disabled_style"
+                return True, True,"promtp_flex_disabled", "icon_run_disabled_style"
         elif model_type == "local_model":
-            return False, True, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
-        return False, True, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
+            return False, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
+        return False, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
     else:
-        return True, False, True,"promtp_flex_disabled", "icon_run_disabled_style"
+        return True, True,"promtp_flex_disabled", "icon_run_disabled_style"
 
 
 # ================================================
@@ -256,15 +314,53 @@ def brick_simulation(text_prompt, api_key_client, model_GPT):
     custom_model = ChatOpenAI(temperature=0, model=model_GPT, api_key=api_key_client)
     brick_graph = BrickSchemaGraph(model=custom_model)
 
+    # Prepare input data
+    input_data = {"user_prompt": text_prompt}
+    
     # Run the graph without streaming
     result = brick_graph.run(
-        prompt=text_prompt,
+        input_data=input_data,
         stream=False
     )
     print(result)
     print(result.get('elem_hierarchy', None))
 
     return result
+
+def brick_simulation_local(building_description, local_model_name):
+    # Create an instance of BrickSchemaGraphLocal
+    brick_graph_local = BrickSchemaGraphLocal(model=local_model_name)
+
+    # Display the graph structure
+    # brick_graph_local.display()
+    instructions = """
+    Your job is to generate a RDF graph in Turtle format from a description of energy systems and sensors of a building in the following input, using the Brick ontology.
+    ### Instructions:
+    - Each subject, object of predicate must start with a @prefix.
+    - Use the prefix bldg: with IRI <http://my-bldg#> for any created entities.
+    - Use the prefix brick: with IRI <https://brickschema.org/schema/Brick#> for any Brick entities and relationships used.
+    - Use the prefix unit: with IRI <http://qudt.org/vocab/unit/> and its ontology for any unit of measure defined.
+    - When encoding the timeseries ID of the sensor, you must use the following format: ref:hasExternalReference [ a ref:TimeseriesReference ; ref:hasTimeseriesId 'timeseriesID' ].
+    - When encoding identifiers or external references, such as building/entities IDs, use the following schema: ref:hasExternalReference [ a ref:ExternalReference ; ref:hasExternalReference ‘id/reference’ ].
+    - When encoding numerical reference, use the schema [brick:value 'value' ; \n brick:hasUnit unit:'unit' ] .
+    -When encoding coordinates, use the schema brick:coordinates [brick:latitude "lat" ; brick:longitude "long" ].
+    The response must be the RDF graph that includes all the @prefix of the ontologies used in the triples. The RDF graph must be created in Turtle format. Do not add any other text or comment to the response.
+    """
+    # Prepare input data
+    input_data = {
+        "user_prompt": building_description,
+        "instructions": instructions
+    }
+
+    # Run the graph
+    result = brick_graph_local.run(input_data=input_data, stream=False)
+
+    # Print the result
+    print(result)
+
+    # Save the result to a file
+    return result
+    # brick_graph_local.save_ttl_output("my_building_local.ttl")
 
 @callback(
     # Output("simulation_run","children"),
@@ -274,6 +370,8 @@ def brick_simulation(text_prompt, api_key_client, model_GPT):
     State("ttl-result", "data"),
     State("api-key_value","value"),
     State("llm_model_version","value"),
+    State("llm_model_type","value"),
+    State("llm_model_local_huggin","value"),
     background=True,
     running=[
         (Output("btn_icon_ontology", "display"), "none", True),
@@ -284,7 +382,7 @@ def brick_simulation(text_prompt, api_key_client, model_GPT):
     ],
     prevent_initial_call=True
 )
-def run_ontology(btn, text_prompt, ttl_result, apiKey, GPTtype,):
+def run_ontology(btn, text_prompt, ttl_result, apiKey, GPTtype,ll_model_type, local_model_name):
     '''
     Run brickllm library to create ontology form prompt
     '''
@@ -300,17 +398,25 @@ def run_ontology(btn, text_prompt, ttl_result, apiKey, GPTtype,):
             log_buffer = BackgroundBuffer()
             sys.stdout = log_buffer
 
-            
-            result = brick_simulation(text_prompt=text_prompt, api_key_client=apiKey, model_GPT=GPTtype)
+            if ll_model_type == "llm_model":
+            # ============================================
+                # 1. Case LLM 
+                result = brick_simulation(text_prompt=text_prompt, api_key_client=apiKey, model_GPT=GPTtype)
+                ttl_output = result.get('ttl_output', None)
+                # ttl_output = dummy_simulation()
+                # Save the output to a file
+                if ttl_output:
+                    print(ttl_output)
+                    ttl_result[f"brick_{btn}.ttl"] = ttl_output
 
-            ttl_output = result.get('ttl_output', None)
-            # ttl_output = dummy_simulation()
- 
- 
-            # Save the output to a file
-            if ttl_output:
-                print(ttl_output)
-                ttl_result[f"brick_{btn}.ttl"] = ttl_output
+            else:   
+                raise Exception ("Local LLM not available yet")       
+                # # ============================================
+                # # 2. Case Local LLM
+                # brick_graph_local = brick_simulation_local(text_prompt, local_model_name)
+                # if brick_graph_local:
+                #     ttl_result[f"brick_{btn}.ttl"] = brick_graph_local
+
 
         except Exception as e:
             msg = str(e)
@@ -369,6 +475,42 @@ def clear_old_logs(btn):
 
 
 
+# import time
+# def print_text_animation(text):
+#     for char in text:
+#         print(char, end="", flush=True)
+#         time.sl
+
+
+# @callback(
+#     # Output('outputS', 'children'),
+#     Output({'type':"log_output_text", 'index':MATCH}, "children"),
+#     Output({'type':'log-output-interval', 'index':MATCH}, 'n_intervals'),
+#     Input({'type':'log-output-interval', 'index':MATCH}, 'n_intervals'),
+#     # Output("interval", 'n_intervals'),
+#     # Input("interval", 'n_intervals'),
+#     Input("log-output-store", "data"),
+#     # State('outputS', 'children')
+#     State({'type':"log_output_text", 'index':MATCH}, "children")
+# )
+# def update_logs(n_intervals,text, current_output):
+#     if n_intervals == 0:
+#         return "", 0  # Initial state
+
+#     # Initialize current_output if None
+#     if current_output is None:
+#         current_output = ""
+
+#     # Reveal more characters for each interval
+#     if len(current_output) < len(text):
+#         # Adjust the number of characters revealed at each interval
+#         characters_to_reveal = min(1, len(text) - len(current_output))
+#         new_output = current_output + text[len(current_output):len(current_output) + characters_to_reveal]
+#         return new_output, n_intervals + 1  # Increment intervals
+#     else:
+#         return current_output, n_intervals  # Stop updating when complete
+
+
 @callback(
     # Output("log_output_text", "children"),
     Output({'type':"log_output_text", 'index':MATCH}, "children"),
@@ -408,12 +550,17 @@ def update_logs(data):
 # ==========================================================================================
 
 def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index):
-    component = html.Div(
+    component = dmc.Center(
         id={"type": "card", "index": index},
+        style = {
+            'zIndex':'1000',
+            # 'marginLeft':'auto',
+            # 'marginRight':'2rem',
+            },
         children = [
-            dmc.ScrollArea( 
-                type="never",       
-                h=250,w='100%',
+            dmc.Flex(
+                id="card_query_response",
+                direction="column",
                 children = [
                     dmc.Flex(
                         children = [
@@ -422,7 +569,12 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                                 radius = "lg",
                                 variant= "outline",
                                 color="black",
-                                style = {'border':"1px solid lightgrey"},
+                                style = {
+                                    'border':"1px solid lightgrey",
+                                    "transition": "boxShadow 0.3s ease",
+                                    "boxShadow": "0px 4px 6px rgba(0, 0, 0, 0.2)",
+
+                                    },
                                 size="lg"
                             ),
                             dmc.Paper(
@@ -441,6 +593,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                         showLabel="Show more",
                         hideLabel="Hide",
                         maxHeight=100,
+                        # mb=10,
                         children=[
                             dmc.Stack(
                                 children = [
@@ -480,12 +633,25 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                             "boxShadow": "0 8px 16px rgba(0, 0, 0, 0.2)",
                             "marginLeft": "5px"
                             }
-                    ),
-                    
-                ]
+                    )
+                ],            
             )
         ]
     )
+    
+    # dmc.Center(
+        
+    #     children = [
+    #         dmc.ScrollArea( 
+    #             type="never",       
+    #             h=250,w='100%',
+    #             children = [
+                    
+                    
+    #             ]
+    #         )
+    #     ]
+    # )
     
 
     return component

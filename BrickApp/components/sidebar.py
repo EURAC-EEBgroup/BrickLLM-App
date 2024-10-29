@@ -4,8 +4,6 @@ from dash_iconify import DashIconify
 
 layout_ = dmc.Container(
     children = [
-        # dmc.Title("Model:", lh=1.2, order=2, mt="xs", fw=900, c="#e12024"),
-        # dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20, w="0%"),
         dmc.Title("Type of LLM",id="modalText1",lh=1.2, order=3, mt="xs", fw=900),
         
         dmc.SegmentedControl(
@@ -15,6 +13,8 @@ layout_ = dmc.Container(
                 {"value": "llm_model", "label": "LLM"},
                 {"value": "local_model", "label": "Local LLM"}
             ],
+            persistence= True,
+            persistence_type = "session",
             mb=10,
             mt=20,
             fullWidth=True,
@@ -57,11 +57,11 @@ layout_ = dmc.Container(
             id="llm_model_local_huggin",
             label=dmc.Text(id="sidebarText4",children = "Available local trained model:"),
             data=[
-                {'value':"model1Huggin","label":"Ollama_1"},
-                {'value':"model2Huggin","label":"Ollama_2"},
-                {'value':"model3Huggin","label":"Ollama_3"},
+                {'value':"llama3.1:8b-brick-v8","label":"llama3.1:8b-brick-v8"},
+                # {'value':"model2Huggin","label":"Ollama_2"},
+                # {'value':"model3Huggin","label":"Ollama_3"},
             ],
-            value="model1Huggin",
+            value="llama3.1:8b-brick-v8",
             radius="lg",
             placeholder="Local trained models",
             leftSectionPointerEvents="none",
@@ -92,6 +92,8 @@ layout_ = dmc.Container(
             persistence=True,
             persistence_type="session"        
         ),
+        html.Div(id="local_warning_time")
+        
         # dmc.Button(
         #     id="btn_confirm_model", children = "CONFIRM", fullWidth=True, radius="lg", style = {'backgroundColor':'red', "color":"white"}
         # )

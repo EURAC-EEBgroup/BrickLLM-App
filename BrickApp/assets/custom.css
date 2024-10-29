@@ -1756,20 +1756,32 @@ th {
   background-color: #eeeeee;
 } */
 
+/* #warning_class_time {
+  border:1px solid rgb(223 27 18);
+  border-radius: 20px;
+  transition: boxShadow 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-top: 10px;
+} */
+
 .promtp_flex_disabled {
   order: 0px solid #eeeeee;
-  border-radius: 20px;
+  border-radius: 40px;
   padding: 5px 10px 5px 10px;
-  background-color: #A9A9A9;
+  background-color: rgb(244 244 244);
 }
 
 .promtp_flex_not_disabled {
   order: 0px solid #eeeeee;
-  border-radius: 20px;
+  border-radius: 40px;
   padding: 5px 10px 5px 10px;
-  background-color: #eeeeee;
+  background-color: rgb(244 244 244);
 }
 
+/* #prompt_flex {
+  margin: calc(50vh - 100px)
+} */
 
 .m_4081bf90{
   justify-content: space-evenly ;
@@ -1791,11 +1803,14 @@ th {
   border:0px;
   resize: none;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   outline: none;
-  height: 20vh !important;
+  /* height: 20vh !important; */
   max-height: 20vh !important;
   width: 100%;
+  padding: 10px;
+  margin-left:10px;
+  margin-right:10px;
 }
 
 /* #ontology-container-div {
@@ -1853,63 +1868,103 @@ th {
   justify-content: end !important;
   font-size: smaller;
 } */
-
-#ontology-container-div {
+#ontology-question-div {
   background-color: transparent;
   display: flex;
   flex-direction: column-reverse;
 }
 
+#ontology-container-div {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column-reverse;
+  max-height: calc(100vh - 57vh);
+  overflow-y: auto; 
+}
+
+#query_prompt{
+  width: 48rem;
+}
+
 @media (min-width: 551px) {
 
   #first-child-wrap {
-    max-height: calc(100vh - 68vh);
+    max-height: calc(100vh - 57vh);
     overflow-y: auto; 
     display: flex;
     flex-direction: column-reverse;
     background-color: transparent;
+  }
+
+  #query_flex {
+    width: 100%;
   }
 }
 
 @media (min-width: 992px) {
 
   #first-child-wrap {
-    max-height: calc(100vh - 60vh);
+    max-height: calc(100vh - 56vh);
     overflow-y: auto; 
     display: flex;
     flex-direction: column-reverse;
     background-color: transparent;
+    margin-right: 3rem;
   }
+  #card_query_response{
+    max-width: 48rem;
+  }
+  #query_prompt{
+    max-width: 48rem;
+  }
+
+  #query_flex {
+    width: 60%;
+  }
+
 }
 #text_prompt_question {
   background-color: rgb(6, 157, 201);
   color: white;
+  margin-left: 3rem;
 }
 
 .single_test_card {
   margin: 1rem;
 }
 
+#icon_stop {
+  margin: auto;
+  bottom: 20;
+  border:1px solid black;
+  color:black;
+  padding: 4px;
+  border-radius: 40px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  background-color: black;
+}
+
 .icon_run_disabled_style {
   margin: auto;
   bottom: 20;
-  border:2px solid #D3D3D3;
+  border:1px solid #D3D3D3;
   color:#D3D3D3;
-  padding: 2px;
+  padding: 4px;
   border-radius: 40px;
-  margin-right: 2px;
-  margin-bottom: 2px;
+  margin-right: 10px;
+  margin-bottom: 5px;
   background-color: #D3D3D3;
 }
 
 .icon_run_not_disabled_style {
   margin: auto;
   bottom: 20;
-  border:2px solid black;
+  border:1px solid black;
   color:black;
-  padding: 2px;
+  padding: 4px;
   border-radius: 40px;
-  margin-right: 2px;
-  margin-bottom: 2px;
+  margin-right: 10px;
+  margin-bottom: 5px;
   background-color: black;
 }

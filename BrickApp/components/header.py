@@ -10,6 +10,21 @@ Header = dmc.AppShellHeader(
         dmc.Grid(
             children = [
                 dmc.GridCol(
+                    children = [
+                        dmc.Center(
+                            children = [
+                                dmc.Flex(
+                                    direction="column",
+                                    w="100%",
+                                    children = [
+                                        dmc.Text("PROMPTING",id="text1", opacity=0.7, fw=700, c="black"),
+                                        dmc.Title("Write text to generate brick ontology", id="text2",lh=1.2, order=3, mt=0, fw=900, c="black"),
+                                        # dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20),
+                                    ]
+                                ),
+                            ]
+                         ),
+                    ],
                     # children = [
                     #     dmc.Anchor(
                     #         href = "/",
@@ -22,9 +37,9 @@ Header = dmc.AppShellHeader(
                     #         ]
                     #     )
                     # ],
-                    span=2
+                    span=7
                 ),
-                dmc.GridCol(span=9),
+                dmc.GridCol(span=2),
                 dmc.GridCol(
                     children = [
                         dmc.Anchor(

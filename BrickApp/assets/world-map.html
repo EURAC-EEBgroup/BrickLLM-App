@@ -1,87 +1,120 @@
-<div>
-    <canvas id="world-map"></canvas>
-
-    <!-- Include the Three.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <!-- draw points on 3d ball shape -->
-    <script>
-        async function loadPoints() {
-            const response = await fetch('points.json');
-            const data = await response.json();
-            return data.points;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D World Map</title>
+    <style>
+        /* Ensure the body and html fill the entire screen */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevents scrolling */
         }
 
-        // Function to convert points to spherical coordinates
-        function toSphericalCoordinates(points, radius) {
-        const maxX = 4100;
-        const maxY = 2050;
+        /* The div should fill the entire screen */
+        div {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        return points.map(point => {
-                // Normalize x and y values to a range [0, 1]
-                const normalizedX = point.x / maxX;  // Normalize x to [0, 1]
-                const normalizedY = point.y / maxY;  // Normalize y to [0, 1]
+        /* The canvas should fill the entire screen */
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <canvas id="world-map"></canvas>
 
-                // Convert normalized values to spherical coordinates
-                let phi = normalizedY * Math.PI;            // Latitude (0 to PI)
-                let theta = normalizedX * 2 * Math.PI;      // Longitude (0 to 2PI)
+        <!-- Include the Three.js library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-                // Calculate the x, y, z position on the sphere
-                const x = radius * Math.sin(phi) * Math.cos(theta);
-                const y = radius * Math.sin(phi) * Math.sin(theta);
-                const z = radius * Math.cos(phi);
+        <!-- Draw points on 3D ball shape -->
+        <script>
+            async function loadPoints() {
+                const response = await fetch('points.json');
+                const data = await response.json();
+                return data.points;
+            }
 
-                return { x, y, z };
+            // Function to convert points to spherical coordinates
+            function toSphericalCoordinates(points, radius) {
+                const maxX = 4100;
+                const maxY = 2050;
+
+                return points.map(point => {
+                    // Normalize x and y values to a range [0, 1]
+                    const normalizedX = point.x / maxX;
+                    const normalizedY = point.y / maxY;
+
+                    // Convert normalized values to spherical coordinates
+                    let phi = normalizedY * Math.PI; // Latitude (0 to PI)
+                    let theta = normalizedX * 2 * Math.PI; // Longitude (0 to 2PI)
+
+                    // Calculate the x, y, z position on the sphere
+                    const x = radius * Math.sin(phi) * Math.cos(theta);
+                    const y = radius * Math.sin(phi) * Math.sin(theta);
+                    const z = radius * Math.cos(phi);
+
+                    return { x, y, z };
+                });
+            }
+
+            function drawPointsOnSphere(points) {
+                const sphericalPoints = toSphericalCoordinates(points, radius);
+
+                sphericalPoints.forEach(point => {
+                    // Create a small sphere for each point
+                    const pointGeometry = new THREE.SphereGeometry(1, 8, 8); // Small spheres
+                    const pointMaterial = new THREE.MeshBasicMaterial({ color: "#989db5" });
+                    const pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
+                    pointMesh.position.set(point.x, point.y, point.z);
+                    group.add(pointMesh);  // Add each point to the group
+                });
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                group.rotation.z += 0.01;
+
+                renderer.render(scene, camera);
+            }
+
+            // Create a new canvas element
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 500;
+
+            const canvas = document.getElementById('world-map');
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+
+            // Create a group to hold the sphere and points
+            const group = new THREE.Group();
+            scene.add(group);
+
+            // Create a sphere geometry
+            const radius = 200;
+            const sphereGeometry = new THREE.SphereGeometry(radius, 32, 32);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: false, opacity: 0, transparent: true });
+            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            group.add(sphere);  // Add the sphere to the group
+
+            loadPoints().then(points => {
+                drawPointsOnSphere(points);
             });
-        }
 
-        function drawPointsOnSphere(points) {
-            const sphericalPoints = toSphericalCoordinates(points, radius);
-
-            sphericalPoints.forEach(point => {
-                // Create a small sphere for each point
-                const pointGeometry = new THREE.SphereGeometry(1, 8, 8); // Small spheres
-                const pointMaterial = new THREE.MeshBasicMaterial({ color: "#989db5" });
-                const pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
-                pointMesh.position.set(point.x, point.y, point.z);
-                group.add(pointMesh);  // Add each point to the group
-            });
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            group.rotation.z += 0.01;
-
-            renderer.render(scene, camera);
-        }
-
-        // Create a new canvas element
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 500;
-
-        const canvas = document.getElementById('world-map');
-        const renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0);
-
-        // Create a group to hold the sphere and points
-        const group = new THREE.Group();
-        scene.add(group);
-
-        // Create a sphere geometry
-        const radius = 200;
-        const sphereGeometry = new THREE.SphereGeometry(radius, 32, 32);
-        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: false, opacity: 0, transparent: true});
-        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        group.add(sphere);  // Add the sphere to the group
-
-        loadPoints().then(points => {
-            drawPointsOnSphere(points);
-        });
-        
-        group.rotation.x -= Math.PI / 2; // adjust position
-        animate();
-    </script>
-
-</div>
+            group.rotation.x -= Math.PI / 2; // Adjust position
+            animate();
+        </script>
+    </div>
+</body>
+</html>

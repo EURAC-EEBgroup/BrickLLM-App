@@ -20,115 +20,178 @@ There are 2 rooms in each office and each room has three sensors:
 
 
 
-layout_ = dmc.Container(
-    children = [
-        html.Iframe(
-            id="iframe_background_image",
-            src="/assets/world-map.html",
-            style={
-                "position": "fixed",  # Makes the iframe act as a background
-                "top": 0,
-                "left": 0,
-                "bottom": 0,
-                "right": 0,
-                "width": "110%",
-                "height": "110%",
-                "overflow": "hidden",  # Hides both x and y overflow
-                "border": "none"  # Removes the border around the iframe
-            }
-        ),
+layout_ = html.Div(
+    [
+        
+        # dcc.Interval(id='interval', interval=50, n_intervals=0, disabled=True),  # Update every 50ms
+        html.Div(id="ontology-container-div",children = []),
+        # dmc.Container(
+            # size="xl",
+            # children = dmc.Flex(
+            #     id="first-child-wrap",
+            #     justify = "flex-end",
+            #     direction="column",
+            #     children = [
+                        
+            #     ]
+            # )
+        # ),
+        # dmc.Container(
+        #     # size="xl",
+        #     children = [
+        #         dmc.Flex(
+        #             direction="column",
+        #             w="100%",
+        #             mb=10,
+        #             children = [
+        #                 html.Div(
+        #                     id="first-child-wrap",
+        #                     children = [
+        #                         # dmc.Center(
+        #                             html.Div(
+        #                                 id="ontology-container-div",
+        #                                 children = []
+        #                             )
+        #                         # )
+        #                     ]
+        #                 ),
+        #             ]
+        #         ),
+        #     ]
+        # ),
         html.Div(
-            children=[
-                dmc.Alert(
-                    id="alert_api_key",
-                    children = dmc.Group(
-                        [
-                            # dmc.Text("In settings,"),
-                        #  DashIconify(icon="lets-icons:setting-fill",width=20),
-                         dmc.Text("Provide the API key of the LLM to be used for generating the ontological model using the Brick schema). If a local model is selected, the API key is not necessary."),
-                        #  dmc.Text("If a local model is selected, the API key is not necessary.")
-                         ],
-                        #  grow=True, 
-                        #  justify="flex-start"
-                         ),
-                    title=dmc.Title("API-KEY required!", order=4, fw=700),
-                    variant="filled",
-                    # color="yellow",
-                    radius="lg",
-                    mb=10,
-                    style = {'backgroundColor':'#0F4881'}
-                ),
-                dmc.Text("PROMPTING",id="text1", opacity=0.7, fw=700, c="black"),
-                dmc.Title("Write text to generate brick ontology", id="text2",lh=1.2, order=3, mt="xs", fw=900, c="black"),
-                dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20),
-            ],
-            style={
-                "position": "relative",
-                "zIndex": 1000,  # Ensures this content appears above the background
-                "color": "white"  # Example styling
-            }
-        ),
-        dmc.Flex(
-            direction="column",
+            id="ontology-question-div",
             children = [
-                html.Div(
-                    id="first-child-wrap",
-                    children = [
-                        html.Div(
-                            id="ontology-container-div",
-                            children = []
-                        ),
-                    ]
-                ),
-                # dmc.Flex(
-                #     direction = "column",
-                #     id="ontology-container-div", children=[], 
-                #     style = {
-                #         'overflow':'hidden'
-                #     }                    
-                # ),
-                dmc.Flex(
-                    id="prompt_flex",
-                    children = [
-                        dcc.Textarea(
-                            id="prompt_command_ontology",  
-                            value = prompt_text_example,
-                            placeholder = "Describe your building, systems, sensors, database, etc.",
-                            contentEditable = True, 
-                        ),
-                        dmc.ActionIcon(
-                            id="btn_icon_ontology",
-                            children = DashIconify(id="icon_run", icon="fa6-solid:trowel-bricks",width=25, rotate=0, color="white", flip="horizontal", style = {'backgroundcolor':'black'}),
-                            size="xl",
-                            variant="transparent",
-                        ),
-                        dmc.ActionIcon(
-                            DashIconify(icon="fluent:record-stop-24-regular", width=100, rotate=1, color="black", ),
-                            size="xl",
-                            variant="transparent",
-                            id="btn_ontology_stop",
-                            style = {'marginTop':'auto', 'bottom':'10'}
-                        ),
-                    ],
-                    align="center",
-                    style = {
-                        'position':'sticky',
-                        # 'zIndex':'999',
-                        # "height": "100px",  # Fixed height
-                        # "left": "0",
-                        # "right": "0",
-                        "bottom": "40px",
-                        # "top":"auto"
-                    }
+                dmc.Center(
+                    dmc.Flex(
+                        id="query_prompt",
+                        direction="column",
+                        # style = {
+                        #     'marginLeft':"10rem",
+                        #     'marginRight':"3rem"
+                        # },
+                        children = [
+                            # html.Div(id='outputS', style={'white-space': 'pre-wrap', 'font-family': 'monospace'}),
+                            dmc.Flex(
+                                id="prompt_flex",
+                                children = [
+                                    dcc.Textarea(
+                                        id="prompt_command_ontology",  
+                                        value = prompt_text_example,
+                                        placeholder = "Describe your building, systems, sensors, database, etc.",
+                                        contentEditable = True, 
+                                    ),
+                                    dmc.ActionIcon(
+                                        id="btn_icon_ontology",
+                                        children = DashIconify(id="icon_run", icon="fa6-solid:trowel-bricks",width=25, rotate=1, color="white", flip="vertical", style = {'backgroundcolor':'black'}),
+                                        size="xl",
+                                        variant="light",
+                                    ),
+                                    dmc.ActionIcon(
+                                        id="btn_ontology_stop",
+                                        # className="icon_stop_query",
+                                        children = DashIconify(id="icon_stop",icon="ic:round-stop", width=25, rotate=1, color="white"),
+                                        size="xl",
+                                        variant="light",
+                                        radius="xl",
+                                        style = {
+                                            'marginTop':'auto', 
+                                            'bottom':'10',
+                                            "border":"1px solid black",
+                                            "color":"black",
+                                            "padding": "4px",
+                                            "borderRadius": "40px",
+                                            "marginRight": "10px",
+                                            "marginBottom": "5px",
+                                            "backgroundColor": "black"
+                                        }
+                                    ),
+                                ],
+                                align="center",
+                                style = {
+                                    'position':'sticky',
+                                    "bottom": "40px",
+                                }
+                            )
+                        ]
+                    ),
+                    # style = {
+                    #     "maxWidth":"48rem"
+                    # }  
                 )
             ]
-        )     
+        )
+        
+        # dmc.Container(
+        #     size = "xl",
+            
+        #     # children = dmc.Flex(
+        #     #     id="query_flex",
+        #     #     direction="column",
+        #     #     # w="60%",    
+        #     children = [
+        #         dmc.Flex(
+        #             direction="column",
+        #             style = {
+        #                 'marginLeft':"10rem",
+        #                 'marginRight':"3rem"
+        #             },
+        #             children = [
+        #                 dmc.Flex(
+        #                     id="prompt_flex",
+        #                     children = [
+        #                         dcc.Textarea(
+        #                             id="prompt_command_ontology",  
+        #                             value = prompt_text_example,
+        #                             placeholder = "Describe your building, systems, sensors, database, etc.",
+        #                             contentEditable = True, 
+        #                         ),
+        #                         dmc.ActionIcon(
+        #                             id="btn_icon_ontology",
+        #                             children = DashIconify(id="icon_run", icon="fa6-solid:trowel-bricks",width=25, rotate=1, color="white", flip="vertical", style = {'backgroundcolor':'black'}),
+        #                             size="xl",
+        #                             variant="light",
+        #                         ),
+        #                         dmc.ActionIcon(
+        #                             id="btn_ontology_stop",
+        #                             # className="icon_stop_query",
+        #                             children = DashIconify(id="icon_stop",icon="ic:round-stop", width=25, rotate=1, color="white"),
+        #                             size="xl",
+        #                             variant="light",
+        #                             radius="xl",
+        #                             style = {
+        #                                 'marginTop':'auto', 
+        #                                 'bottom':'10',
+        #                                 "border":"1px solid black",
+        #                                 "color":"black",
+        #                                 "padding": "4px",
+        #                                 "borderRadius": "40px",
+        #                                 "marginRight": "10px",
+        #                                 "marginBottom": "5px",
+        #                                 "backgroundColor": "black"
+        #                             }
+        #                         ),
+        #                     ],
+        #                     align="center",
+        #                     style = {
+        #                         'position':'sticky',
+        #                         "bottom": "40px",
+        #                     }
+        #                 )
+        #             ]
+        #         )     
+        #     ]
+        #     # ),
+        #     # mb=5,
+        # )
     ]
 )
 
 overall_layout =html.Div(
-    [layout_,
-    Sidebar]
+    [
+        layout_,
+        Sidebar
+    ]
 )
 
 def layout():

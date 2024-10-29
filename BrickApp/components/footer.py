@@ -127,20 +127,20 @@ Footer =  dmc.AppShellFooter(
                 ),        
             ]
         ),
-        dmc.Divider(variant="solid", c="black", size="md", mt=5, mb=5),
-        dmc.Text(
-            html.A(
-                "Copyright © Eurac Research",
-                href="http://www.eurac.edu/en/pages/default.aspx",
-                style={
-                    "color": "grey",
-                }
-            ),
-            mb=5,
-            style={
-                "textAlign": "center"
-            }
-        ),
+        # dmc.Divider(variant="solid", c="black", size="md", mt=5, mb=5),
+        # dmc.Text(
+        #     html.A(
+        #         "Copyright © Eurac Research",
+        #         href="http://www.eurac.edu/en/pages/default.aspx",
+        #         style={
+        #             "color": "grey",
+        #         }
+        #     ),
+        #     mb=5,
+        #     style={
+        #         "textAlign": "center"
+        #     }
+        # ),
         # dmc.Container(
         #     children=[
         #         html.Div(
