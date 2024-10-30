@@ -15,10 +15,10 @@ from flask import Flask
 dash._dash_renderer._set_react_version("18.2.0")
 # server = Flask(__name__, root_path=DASH_RELATIVE_PATH)
  
-if 'REDIS_URL' in os.environ:
+if 'REDIS_URL_BROKER' in os.environ:
     # Use Redis & Celery if REDIS_URL set as an env variable
     from celery import Celery
-    celery_app = Celery(__name__, broker=os.environ['REDIS_URL'], backend=os.environ['REDIS_URL'])
+    celery_app = Celery(__name__, broker=os.environ['REDIS_URL_BROKER'], backend=os.environ['REDIS_URL_BACKEND'])
     background_callback_manager = CeleryManager(celery_app)
  
 else:
@@ -128,7 +128,7 @@ def run_native_dash_app(dash_app: Dash, window_title: str = None) -> None:
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=True, port=8091, dev_tools_hot_reload=True)
+    app.run_server(debug=False, port=8091, dev_tools_hot_reload=True)
     # app.run(debug=False) # uncomment this line to run Dash application, and comment otherwise.
 
     '''Run Pywebview application (Production)'''

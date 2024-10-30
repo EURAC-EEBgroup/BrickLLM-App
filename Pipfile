@@ -11,10 +11,12 @@ pandas = "*"
 py2app = "*"
 setuptools = "==70.3.0"
 pipfile = "*"
-brickllm = {file = "dist_brick_local/brickllm-0.0.2.tar.gz"}
 celery = "*"
 diskcache = "*"
 dash = {extras = ["diskcache"], version = "*"}
+brickllm = {file = "dist_brick_local/brickllm-0.0.1.tar.gz"}
+gunicorn = "*"
+redis = "*"
 
 [dev-packages]
 ipykernel = "*"

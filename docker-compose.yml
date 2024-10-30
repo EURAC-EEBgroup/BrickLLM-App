@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  brick_ontology_tool:
+    image: brick:dev
+    command:  gunicorn -w 3 -b :8091 app:server
+    ports:
+      - 8091:8091
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  celery: 
+    image: brick:dev
+    command: celery -A app.celery_app worker -P threads --loglevel=INFO
+    env_file:
+      - .env
+    depends_on:
+      - brick_ontology_tool
+      - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+  monitor:
+    image: brick:dev
+    ports:
+     - "5555:5555"
+    command: celery -A app.celery_app beat --loglevel=INFO
+    env_file:
+      - .env
+    depends_on:
+      - brick_ontology_tool
+      - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    volumes:
+      - 'redis:/data'
+
+
+volumes:
+    redis:

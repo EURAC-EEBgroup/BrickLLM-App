@@ -31,3 +31,18 @@ objc[9558]: +[NSString initialize] may have been in progress in another thread w
 run in terminal:
 
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+
+# Deployment: 
+
+1. build dev docker image: 
+```
+    docker build --platform=linux/amd64 -t brick:dev .   
+```
+
+2. run docker compose: 
+```
+    docker compose up
+```
+
+
