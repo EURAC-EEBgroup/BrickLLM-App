@@ -1882,7 +1882,7 @@ th {
   transition: 0.1s ease-in;
   width: 45px;
   cursor: pointer;
-  padding: 0px;
+  /* padding: 0px; */
   border-radius: 45px;
   margin-left: 50px !important;
   margin-right: 50px !important;
