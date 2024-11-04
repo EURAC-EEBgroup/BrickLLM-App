@@ -723,3 +723,15 @@ def update_buttons_state(btn, ids):
 #     if href == "http://127.0.0.1:8097/contact":
 #         return "none"
 #     return True
+
+
+
+@callback(
+    Output("drawer-simple", "opened"),
+    Input("burger_mobile", "n_clicks"),
+    State("drawer-simple", "opened")
+)
+def toggle_drawer(n_clicks, is_opened):
+    if n_clicks:
+        return not is_opened  # Toggle the state of the drawer
+    return is_opened  # Return the current state if no clicks yet

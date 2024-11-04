@@ -1,47 +1,45 @@
-import dash
-from dash import dcc, html
-from dash.dependencies import Input, Output, State
-import time
-import threading
+import base64
+from dash import Dash, html, dcc, Input, Output, State
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-app.layout = html.Div([
-    dcc.Input(id='input-command', type='text', value='echo Hello, World!'),
-    html.Button('Run Command', id='run-button', n_clicks=0),
-    dcc.Textarea(id='output-area', style={'width': '100%', 'height': '300px'}, value='', readOnly=True)
+app.layout = dbc.Container([
+    html.H3("Select Files from a Folder"),
+    dcc.Upload(
+        id="upload-folder",
+        children=html.Button("Choose Folder"),
+        multiple=True,  # Allow multiple files to be uploaded
+        style={
+            'width': '100%',
+            'height': '60px',
+            'lineHeight': '60px',
+            'borderWidth': '1px',
+            'borderStyle': 'dashed',
+            'borderRadius': '5px',
+            'textAlign': 'center',
+            'margin': '10px'
+        }
+    ),
+    html.Div(id="output-folder")
 ])
 
-def simulate_terminal_output(command, update_output):
-    # Simulate processing the command
-    output = f"Running command: {command}\n"
-    time.sleep(1)  # Simulate time delay for processing
-    # Simulate command output
-    if command.startswith('echo'):
-        output += command[5:] + '\n'
-    else:
-        output += f"Command not found: {command}\n"
-    update_output(output)
-
 @app.callback(
-    Output('output-area', 'value'),
-    Input('run-button', 'n_clicks'),
-    Input('input-command', 'value')
+    Output("output-folder", "children"),
+    [Input("upload-folder", "contents")],
+    [State("upload-folder", "filename")]
 )
-def run_command(n_clicks, command):
-    if n_clicks > 0:
-        output = []
-        
-        # Create a function to update output from the thread
-        def update_output(new_output):
-            nonlocal output
-            output.append(new_output)
+def show_folder(contents, filenames):
+    if contents is not None:
+        # Extract folder names from filenames
+        folder_names = set()
+        for filename in filenames:
+            # Extract the folder part from the filename
+            folder = filename.split('/')[0] if '/' in filename else filename.split('\\')[0]
+            folder_names.add(folder)
 
-        # Start a thread to simulate terminal output
-        threading.Thread(target=simulate_terminal_output, args=(command, lambda x: update_output(x))).start()
-        
-        return '\n'.join(output)  # Return current output
-    return ''  # Return empty if no button click
+        return html.Div([html.P(f"Detected Folder: {folder}") for folder in folder_names])
+    return "No folder selected"
 
 if __name__ == '__main__':
     app.run_server(debug=True)

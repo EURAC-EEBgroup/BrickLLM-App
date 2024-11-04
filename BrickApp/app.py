@@ -128,7 +128,7 @@ def run_native_dash_app(dash_app: Dash, window_title: str = None) -> None:
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=False, port=8091, dev_tools_hot_reload=True)
+    app.run_server(debug=True, port=8091, dev_tools_hot_reload=True)
     # app.run(debug=False) # uncomment this line to run Dash application, and comment otherwise.
 
     '''Run Pywebview application (Production)'''

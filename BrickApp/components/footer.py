@@ -2,6 +2,7 @@ import dash_mantine_components as dmc
 from dash import html, get_relative_path, dcc
 
 Footer =  dmc.AppShellFooter(
+    id="footer__",
     h=180,
     zIndex=1000, 
     withBorder=True,
@@ -29,6 +30,7 @@ Footer =  dmc.AppShellFooter(
                                     ]
                                 ),
                                 dmc.Text(
+                                    id="text_moderate",
                                     children="Horizon Europe research and innovation programme under grant agreement No 101069834. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or CINEA. Neither the European Union nor the granting authority can be held responsible for.",
                                     size="xs",
                                     opacity=1,
@@ -38,7 +40,8 @@ Footer =  dmc.AppShellFooter(
                             ],
                             span=4,
                             mt=10,
-                            ml=10
+                            ml=10,
+                            # sm=
                         ),
                         dmc.GridCol(
                             children = [

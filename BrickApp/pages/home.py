@@ -3,6 +3,7 @@ from dash import html, dcc
 import  dash_mantine_components as dmc
 from dash_iconify import DashIconify
 from components.sidebar import Sidebar
+from components.sidebar import layout_ as layout_sidebar
 
 dash.register_page(__name__, path='/')
 
@@ -118,9 +119,14 @@ layout_ = html.Div(
                     # style = {
                     #     "maxWidth":"48rem"
                     # }  
-                )
+                ),
+                dmc.Drawer(
+                    id="drawer-simple",
+                    padding="md",                    
+                    children = [layout_sidebar]
+                ),
             ]
-        )
+        ),
         
         # dmc.Container(
         #     size = "xl",

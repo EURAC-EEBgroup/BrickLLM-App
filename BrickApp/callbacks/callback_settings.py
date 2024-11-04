@@ -1,4 +1,5 @@
 from dash import Output, Input, State, ctx, callback
+from dash.exceptions import PreventUpdate 
 import dash_mantine_components as dmc
 
 display_on = {'display':'block'}
@@ -103,3 +104,15 @@ def types_of_llm_to_be_used(llm_selected):
 #         value="test"
     
 #     return data, value
+from urllib.parse import urlparse
+@callback(
+    Output("burger_mobile","style"),
+    Output("menu_mobile_button","style"),
+    Input("url_app","href")
+)
+def delete_burger_drawer_contact(url):
+    style_ = {'display':'none'}
+    style_b = {'display':'block'}
+    if urlparse(url).path=="/contact":
+        return style_, style_
+    raise PreventUpdate
