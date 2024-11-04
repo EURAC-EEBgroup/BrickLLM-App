@@ -1,5 +1,9 @@
-# Brick ontology tool
-Application to create brick ontology starting from user prompt
+# 🧱 BrickLLM
+
+BrickLLM is a web app for generating RDF files following the BrickSchema ontology using Large Language Models (LLMs) through the user prompt.
+
+# Features
+The application 
 
 ## Requires
 - python 3.12
