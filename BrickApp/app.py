@@ -49,7 +49,7 @@ server.config.update(
 from components.header import Header
 from components.drawer import Drawer
 
-from callbacks import (callback_header, callback_settings, callback_home, callback_test)
+from callbacks import (callback_header, callback_settings, callback_home)
 
 dynamic_background = html.Iframe(
     id="iframe_background_image",
