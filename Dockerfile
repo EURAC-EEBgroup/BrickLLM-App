@@ -13,12 +13,11 @@ RUN apt-get update && apt-get install -y \
     build-essential
 
 COPY ./requirements.txt /app/requirements.txt
-COPY ./dist_brick_local /app/dist_brick_local
+# COPY ./dist_brick_local /app/dist_brick_local
 RUN pip3 install --no-cache-dir --upgrade -r /app/requirements.txt
 
-# COPY ./Pipfile /app/Pipfile
-# COPY ./dist_brick_local /app/dist_brick_local
+# COPY ./Pipfile .
 # RUN pip3 install pipenv
-# RUN pipenv install --skip-lock --system --dev
+# RUN pipenv install --skip-lock 
 
 COPY ./BrickApp /app

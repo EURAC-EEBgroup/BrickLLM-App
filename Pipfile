@@ -15,6 +15,7 @@ dash = {extras = ["diskcache"], version = "*"}
 brickllm = "*"
 gunicorn = "*"
 redis = "*"
+dash-daq = "*"
 
 [dev-packages]
 ipykernel = "*"
