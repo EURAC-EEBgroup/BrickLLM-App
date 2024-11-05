@@ -19,65 +19,56 @@ The open-source python web app has been developed using [Dash plotly](https://da
 - [] directly through the website hosted by [Eurac Reserch](https://https://www.eurac.edu/en/institutes-centers/institute-for-renewable-energy/research-group/energy-efficient-buildings/) at the following link
 - [] or on-premises.
 
-# On-premises deployment
-It is recommended to use a virtual environment such as Pipenv or Pyenv. The tool is currently tested with Python 3.12.6. After installing the required libraries using the command 
+# On-premises
+It is recommended to use a virtual environment such as Pipenv or Pyenv. For example: 
+
+``` bash
+    pipenv shell --python 3.12.6
+    pipenv install
+    source $(pipenv --venv)/bin/activate
+```
+
+The tool is currently tested with Python 3.12.6. After installing the required libraries using the command 
 
 ``` bash
 pip install -r requirements.txt
 ```
 
-the application will start running the command inside the folder BrickApp
+the application can start 
+1) locally: running the command inside the folder BrickApp
 
 ``` bash
 python app.py
 ```
+the actual port set up is: 8091
+
+or create and use a docker container:
+
+1. build dev docker image: 
+``` bash 
+    docker build --platform=linux/amd64 -t brick:dev .   
+```
+
+2. run docker compose: 
+``` bash 
+    docker compose up
+```
 
 # Example
 
+## Possible issue running in Mac:
 
-
-# License
-
-to run the ca
-```
-    pipenv shell --python 3.12.6
-```
-
-## Install dependencies 
-```
-    pipenv install
-```
-# Activate 
-source $(pipenv --venv)/bin/activate
-
-# As soon as the brick library it is not in pip 
-install locally
-```
-    pip install dist_brick_local/brickllm-0.0.2.tar.gz
-```
-
-## issue running in Mac:
-if there are these allerts
-```
+If there are these allerts
+``` bash 
 objc[9558]: +[NSString initialize] may have been in progress in another thread when fork() was called.
 objc[9558]: +[NSString initialize] may have been in progress in another thread when fork() was called. We cannot safely call it or ignore it in the fork() child process. Crashing instead. Set a breakpoint on objc_initializeAfterForkError to debug.
 ```
 
 run in terminal:
-
+``` bash
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-
-# Deployment: 
-
-1. build dev docker image: 
-```
-    docker build --platform=linux/amd64 -t brick:dev .   
 ```
 
-2. run docker compose: 
-```
-    docker compose up
-```
+
 
 
