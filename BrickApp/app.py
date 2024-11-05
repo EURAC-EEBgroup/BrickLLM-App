@@ -76,4 +76,4 @@ app.layout = dmc.MantineProvider(
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=True, port=8091, dev_tools_hot_reload=True)
+    app.run_server(debug=False, port=8091, dev_tools_hot_reload=False)
