@@ -6,12 +6,16 @@
 
 BrickLLM is a web app for generating RDF files following the BrickSchema ontology using Large Language Models (LLMs). It is based on the python library BrickLLM - [pypi](https://pypi.org/project/brickllm/) and [github](https://github.com/EURAC-EEBgroup/brick-llm)
 
-## Citation
-Please cite us if you use the library
+## 📝 Citation
+Please cite us if you use:
+
+- the library
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14039358.svg)](https://zenodo.org/doi/10.5281/zenodo.14039358)
 
+- the application
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14039609.svg)](https://zenodo.org/doi/10.5281/zenodo.14039609)
 
 # Brief description
 The open-source python web app has been developed using [Dash plotly](https://dash.plotly.com/) and the [dash mantine components](https://www.dash-mantine-components.com/). The tool can be used:
@@ -69,6 +73,21 @@ run in terminal:
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 ```
 
+## 🤝 Contributing
 
+We welcome contributions to BrickLLM! Please see our [contributing guidelines](CONTRIBUTING.md) for more information.
+
+## 📜 License
+
+BrickLLM is released under the BSD-3-Clause License. See the [LICENSE](LICENSE) file for details.
+
+## 🫂 Contacts
+
+For any questions or support, please contact:
+
+- Daniele Antonucci <daniele.antonucci@eurac.edu>
+- Olga Somova <olga.somova@eurac.edu>
+- Marco Perini <marco.perini@eurac.edu>
+- Rocco Giudice <rocco.giudice@polito.it>
 
 
