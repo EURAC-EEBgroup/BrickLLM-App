@@ -24,8 +24,8 @@ services:
     ports:
      - "5555:5555"
     command: celery -A app.celery_app beat --loglevel=INFO
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     depends_on:
       - brick_ontology_tool
       - redis

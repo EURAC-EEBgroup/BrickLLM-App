@@ -1982,6 +1982,7 @@ th {
   }
   #query_prompt{
     max-width: 48rem;
+    margin-bottom:5px
   }
 
   #query_flex {

@@ -93,7 +93,7 @@ notification_text = dmc.Notification(
     )
 @callback(
     Output("notifications-container", "children"),
-    Input("btn_confirm_model","checked"),
+    Input("btn_confirm_model","value"),
     State("llm_model_type","value"),
     State("api-key_value","value"),
     prevent_initial_call=True,
@@ -156,7 +156,7 @@ def text_time_warning(model_):
     Output("llm_model_version","disabled"),
     Output("api-key_value","disabled"),
     Output("llm_model_local_huggin","disabled"),
-    Input("btn_confirm_model","checked"),
+    Input("btn_confirm_model","value"),
 )
 def block_selection(btn):
     if btn:
@@ -170,7 +170,7 @@ def block_selection(btn):
     Output("btn_icon_ontology","disabled"),
     Output("prompt_flex","className"),
     Output("btn_icon_ontology","className"),
-    Input("btn_confirm_model","checked"),
+    Input("btn_confirm_model","value"),
     State("llm_model_type","value"),
     State("api-key_value","value")
 )
