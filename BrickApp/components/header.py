@@ -95,7 +95,7 @@ header_flex = dmc.Flex(
                                     [
                                         dmc.Anchor(
                                             dmc.MenuItem("Terms and Condition", leftSection=DashIconify(icon="hugeicons:legal-02")),
-                                             href="/terms_condition",
+                                             href="/terms&condition",
                                             target="_blank"
                                         ),
                                         dmc.Anchor(
