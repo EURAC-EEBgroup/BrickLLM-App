@@ -3,13 +3,13 @@ from dash import dcc, html, Dash
 import dash_mantine_components as dmc
 import os
 from dash import Dash, DiskcacheManager, CeleryManager, html, callback
-
-from components.footer import Footer
+from flask import Flask
 
 # dash mantine components >= 14.0.1 requires React 18+
 dash._dash_renderer._set_react_version("18.2.0")
 
-# server = Flask(__name__, root_path=DASH_RELATIVE_PATH)
+server = Flask(__name__, root_path='/brickllm')
+os.environ['DASH_URL_BASE_PATHNAME'] = '/brickllm/'
  
 if 'REDIS_URL_BROKER' in os.environ:
     # Use Redis & Celery if REDIS_URL set as an env variable
@@ -22,10 +22,11 @@ else:
     import diskcache
     cache = diskcache.Cache("./cache")
     background_callback_manager = DiskcacheManager(cache)
- 
+
 
 app = Dash(
     __name__, 
+    server=server,
     use_pages=True,
     assets_folder='assets',  
     title="Brick-LLM",
@@ -34,14 +35,16 @@ app = Dash(
     external_stylesheets=dmc.styles.ALL,
 )
 
-
 server = app.server
 server.config.update(
     SECRET_KEY=os.environ.get('SECRET_KEY', os.urandom(12)),
 )
 
+
+
 from components.header import Header
 from components.drawer import Drawer
+from components.footer import Footer
 
 from callbacks import (callback_header, callback_settings, callback_home)
 

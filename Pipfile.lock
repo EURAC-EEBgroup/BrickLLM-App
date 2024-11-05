@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1096c70462b12ad5d0ec18f550ac3ed1969cc8b9d8655468ceed5040ee04d93f"
+            "sha256": "d0fe17a2fcaf752c7a42315835707943d8da5f108e121db15a0b0e1eb21e3e1f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -187,12 +187,12 @@
         },
         "brickllm": {
             "hashes": [
-                "sha256:0a3507f534f38c17e4e4af32a2d35cb38bda3f8b0d43e07d6596abced029f72c",
-                "sha256:e360e76853e0b575d7eb984b9b8191099b5e3ec30fcb1b25263452d59dccc115"
+                "sha256:3ee07ea96900964da00221873c68d8baf90914b863302749ce6a29092d559048",
+                "sha256:45f89ea83b55ee102ec86c845bc4fbea5875e02b7bc057bdfa32fbdd9714e2e2"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9' and python_version < '4.0'",
-            "version": "==1.1.1"
+            "version": "==1.1.2"
         },
         "celery": {
             "hashes": [
@@ -462,6 +462,7 @@
                 "sha256:34e815dfaa43340d1d15a5c3a02b8476004037eb4840b34910c6e21679d288f3",
                 "sha256:ceb27b0af3823ea2737928a4d99d125a06175b8512c445cbd9a9ce200ef76842"
             ],
+            "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==3.0.3"
         },

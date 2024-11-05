@@ -16,6 +16,7 @@ brickllm = "*"
 gunicorn = "*"
 redis = "*"
 dash-daq = "*"
+flask = "*"
 
 [dev-packages]
 ipykernel = "*"

@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc
+from dash import html, dcc, get_relative_path
 import  dash_mantine_components as dmc
 from dash_iconify import DashIconify
 from components.sidebar import Sidebar
@@ -32,7 +32,7 @@ layout_ = html.Div(
                                 children = [
                                     dcc.Textarea(
                                         id="prompt_command_ontology",  
-                                        value = prompt_text_example,
+                                        # value = prompt_text_example,
                                         placeholder = "Describe your building, systems, sensors, database, etc.",
                                         contentEditable = True, 
                                     ),
@@ -82,7 +82,7 @@ layout_ = html.Div(
 
 dynamic_background = html.Iframe(
     id="iframe_background_image",
-    src="/assets/world-map.html",
+    src=get_relative_path("/assets/world-map.html"),
     style={
         "position": "fixed",  # Makes the iframe act as a background
         "top": 0,

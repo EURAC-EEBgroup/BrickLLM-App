@@ -1,5 +1,6 @@
 import dash_mantine_components as dmc
-from dash import html
+from dash import html, get_relative_path
+
 
 Footer =  dmc.AppShellFooter(
     id="footer__",
@@ -20,7 +21,7 @@ Footer =  dmc.AppShellFooter(
                                             href = "www.eurac.edu",
                                             children = [
                                                 dmc.Image(
-                                                    src = "/assets/moderate_logo.png",
+                                                    src = get_relative_path("/assets/moderate_logo.png"),
                                                     h=50,
                                                     w="auto"
                                                 )
@@ -53,7 +54,7 @@ Footer =  dmc.AppShellFooter(
                                                 dmc.Anchor(
                                                     children = [
                                                         dmc.Image(
-                                                            src = "/assets/eurac_logo_grey_WEB_pos.png",
+                                                            src = get_relative_path("/assets/eurac_logo_grey_WEB_pos.png"),
                                                             h=50,
                                                             w="auto"
                                                         ),
@@ -65,7 +66,7 @@ Footer =  dmc.AppShellFooter(
                                                 dmc.Anchor(
                                                     children = [
                                                         dmc.Image(
-                                                            src = "/assets/logo_polito.png",
+                                                            src = get_relative_path("/assets/logo_polito.png"),
                                                             h=70,
                                                             w="auto"
                                                         )
@@ -90,7 +91,7 @@ Footer =  dmc.AppShellFooter(
                                     children = [
                                         dmc.Divider(variant="solid", w=30, color="black",size="lg",mt=10),
                                         html.A(
-                                            href = "/contact",
+                                            href = get_relative_path("/contact"),
                                             title="Contact",
                                             children=[
                                                 html.Span("Contact")
@@ -105,7 +106,7 @@ Footer =  dmc.AppShellFooter(
                                     children = [
                                         dmc.Divider(variant="solid", w=30, color="black",size="lg",mt=10),
                                         html.A(
-                                            href = "/terms&condition",
+                                            href = get_relative_path("/terms&condition"),
                                             title="Terms",
                                             children=[
                                                 html.Span("Terms and Condition")
@@ -197,11 +198,11 @@ footer_1 = html.Div(
                                                             children = [
                                                                 dmc.Anchor(
                                                                     "Contact",
-                                                                    href="/contact",
+                                                                    href=get_relative_path("/contact"),
                                                                 ),
                                                                 html.A(
                                                                     className="navispecial_link linkstyle linkstyle__1",
-                                                                    href = "/contact",
+                                                                    href = get_relative_path("/contact"),
                                                                     title="Contact",
                                                                     children=[
                                                                         html.Span(

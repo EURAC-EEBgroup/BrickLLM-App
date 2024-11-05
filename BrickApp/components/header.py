@@ -95,12 +95,12 @@ header_flex = dmc.Flex(
                                     [
                                         dmc.Anchor(
                                             dmc.MenuItem("Terms and Condition", leftSection=DashIconify(icon="hugeicons:legal-02")),
-                                             href="/terms&condition",
+                                             href=get_relative_path("/terms&condition"),
                                             target="_blank"
                                         ),
                                         dmc.Anchor(
                                             dmc.MenuItem("Contact", leftSection=DashIconify(icon="weui:contacts-outlined")),
-                                            href = "/contact",
+                                            href = get_relative_path("/contact"),
                                             target="_blank"
                                         )
                                     ]
