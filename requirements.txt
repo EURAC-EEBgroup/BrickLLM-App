@@ -10,3 +10,4 @@ numpy==1.26.4
 pandas==2.2.3
 langchain-openai==0.2.0
 urllib3==2.2.3
+gunicorn==23.0.0
