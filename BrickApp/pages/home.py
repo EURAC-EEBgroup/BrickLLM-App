@@ -108,12 +108,7 @@ overall_layout = dmc.AppShellMain(
     ]
     
 ),
-# overall_layout =html.Div(
-#     [
-#         layout_,
-#         Sidebar
-#     ]
-# )
+
 
 def layout():
 

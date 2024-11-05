@@ -95,9 +95,6 @@ layout_ = dmc.Container(
         dmc.Text(text, mb=5, mt=2, opacity=0.9),
         dmc.Text(text_1, mt=20, mb=20, opacity=0.9, fw=700),
         name_contact
-        # page_text_layout(name_contact)
-
-
     ]
 )
 

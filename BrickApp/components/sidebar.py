@@ -59,8 +59,6 @@ layout_ = dmc.Container(
             label=dmc.Text(id="sidebarText4",children = "Available local trained model:"),
             data=[
                 {'value':"llama3.1:8b-brick-v8","label":"llama3.1:8b-brick-v8"},
-                # {'value':"model2Huggin","label":"Ollama_2"},
-                # {'value':"model3Huggin","label":"Ollama_3"},
             ],
             value="llama3.1:8b-brick-v8",
             radius="lg",
@@ -70,7 +68,6 @@ layout_ = dmc.Container(
             comboboxProps={"shadow": "lg","transitionProps": { "transition": 'pop', "duration": 200 }},
             mt=10
         ),
-        # dcc.Input(id="api-key_value"),
         dmc.PasswordInput(
             id="api-key_value",
             label=dmc.Text("API KEY:",id="sidebarText5", fw=700),
@@ -88,7 +85,6 @@ layout_ = dmc.Container(
             value=False,
             label="Confirm selection",
             labelPosition ="bottom",
-            # label=dmc.Text(id="confirmSelection", children = "Confirm selection"),
             color="rgb(6, 157, 201)",
             theme="dark",
             persistence=True,
@@ -105,10 +101,6 @@ layout_ = dmc.Container(
         #     persistence_type="session"        
         # ),
         html.Div(id="local_warning_time")
-        
-        # dmc.Button(
-        #     id="btn_confirm_model", children = "CONFIRM", fullWidth=True, radius="lg", style = {'backgroundColor':'red', "color":"white"}
-        # )
     ]
 )
 

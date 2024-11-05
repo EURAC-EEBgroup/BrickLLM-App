@@ -90,7 +90,6 @@ notification_text = dmc.Notification(
         style = {'backgroundColor':'white', 'border':'1px solid #0F4881'},
         closeButtonProps = {'color':'white'},
         w='100%'
-        # variant = "filled"
     )
 @callback(
     Output("notifications-container", "children"),
@@ -104,11 +103,6 @@ def show(btn, model_type, api_key):
         if model_type == "llm_model":
             if api_key == None or api_key == "":
                 return notification_text
-    # else:
-    #     if model_type == "llm_model":
-    #         if api_key != None or api_key != "":
-    #     return notification_text
-
 
 # ======
 '''Text Warning time for local model'''
@@ -226,17 +220,6 @@ style_action_icon_on = {
     'transition': 'opacity 2s', 
     'opacity': 1
 }
-
-# @callback(
-#     Output("btn_icon_ontology",'style'),
-#     Input("prompt_command_ontology", 'value'),
-#     prevent_initial_call=True
-# )
-# def hide_run_button(valPrompt):
-#     if valPrompt:
-#         return style_action_icon_on
-#     else:
-#         return style_hide
 
 @callback(
     Output("btn_icon_ontology",'display'),
@@ -646,22 +629,6 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
             )
         ]
     )
-    
-    # dmc.Center(
-        
-    #     children = [
-    #         dmc.ScrollArea( 
-    #             type="never",       
-    #             h=250,w='100%',
-    #             children = [
-                    
-                    
-    #             ]
-    #         )
-    #     ]
-    # )
-    
-
     return component
 
 
@@ -715,16 +682,6 @@ def update_buttons_state(btn, ids):
 
     btns = [0] * len(ids)
     return btns
-
-# @callback(
-#     Output("sidebar_","display"),
-#     Input("url_app","href")
-# )
-# def visualize_sidebar(href):
-#     if href == "http://127.0.0.1:8097/contact":
-#         return "none"
-#     return True
-
 
 
 @callback(
