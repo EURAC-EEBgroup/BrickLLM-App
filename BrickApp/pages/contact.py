@@ -1,4 +1,4 @@
-from dash import dcc, html, get_relative_path
+from dash import html
 import dash_mantine_components as dmc
 import dash 
 from dash_iconify import DashIconify
@@ -87,6 +87,7 @@ name_contact = html.Div(
 
 
 layout_ = dmc.Container(
+    mt=90, 
     children = [
         dmc.Text("Contact",id="text1", opacity=0.7, fw=700, c="black"),
         dmc.Title("BRICK - LLM", id="text2",lh=1.2, order=3, mt="xs", fw=900, c="black"),
@@ -99,11 +100,6 @@ layout_ = dmc.Container(
 
     ]
 )
-
-# mainContainer = html.Div([
-#     layout_,
-# ])
-
 
 def layout():
     return layout_

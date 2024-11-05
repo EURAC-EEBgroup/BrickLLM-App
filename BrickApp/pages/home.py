@@ -80,12 +80,40 @@ layout_ = html.Div(
     ]
 )
 
-overall_layout =html.Div(
-    [
-        layout_,
-        Sidebar
-    ]
+dynamic_background = html.Iframe(
+    id="iframe_background_image",
+    src="/assets/world-map.html",
+    style={
+        "position": "fixed",  # Makes the iframe act as a background
+        "top": 0,
+        "left": 0,
+        "bottom": 0,
+        "right": 0,
+        "width": "100%",
+        "height": "100%",
+        "overflow": "hidden",  # Hides both x and y overflow
+        "border": "none"  # Removes the border around the iframe
+    }
 )
+
+overall_layout = dmc.AppShellMain(
+    [
+        dynamic_background,
+        html.Div(
+            [
+                layout_,
+                Sidebar
+            ]
+        )
+    ]
+    
+),
+# overall_layout =html.Div(
+#     [
+#         layout_,
+#         Sidebar
+#     ]
+# )
 
 def layout():
 

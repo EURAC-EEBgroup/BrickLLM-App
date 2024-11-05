@@ -1,17 +1,49 @@
+<p align="center">
+  <img src="BrickApp/assets/brickllm_banner.png" alt="BrickLLM" style="width: 100%;">
+</p>
+
 # 🧱 BrickLLM
 
-BrickLLM is a web app for generating RDF files following the BrickSchema ontology using Large Language Models (LLMs) through the user prompt.
+BrickLLM is a web app for generating RDF files following the BrickSchema ontology using Large Language Models (LLMs). It is based on the python library BrickLLM
 
-# Features
-The application 
+Citation
+----------
+Please cite us if you use the library
 
-## Requires
-- python 3.12
+.. image:: https://zenodo.org/badge/761715706.svg
+  :target: https://zenodo.org/doi/10.5281/zenodo.10887919
 
-## Development:
+
+# Brief description
+The open-source python web app has been developed using [Dash plotly](https://dash.plotly.com/) and the [dash mantine components](https://www.dash-mantine-components.com/). The tool can be used:
+- [] directly through the website hosted by [Eurac Reserch](https://https://www.eurac.edu/en/institutes-centers/institute-for-renewable-energy/research-group/energy-efficient-buildings/) at the following link
+- [] or on-premises.
+
+# On-premises deployment
+It is recommended to use a virtual environment such as Pipenv or Pyenv. The tool is currently tested with Python 3.12.6. After installing the required libraries using the command 
+
+````
+    pip install -r requirements.txt
+```    
+
+the application will start running the command inside the folder BrickApp
+
+```
+python app.py
+
+```
+
+# Example
+
+
+
+# License
+
+to run the ca
 ```
     pipenv shell --python 3.12.6
 ```
+
 ## Install dependencies 
 ```
     pipenv install

@@ -48,18 +48,49 @@ header_flex = dmc.Flex(
                 ),
                 dmc.GridCol(
                     children = [
-                        dmc.Anchor(
-                            dmc.ActionIcon(
-                                id="github",
-                                children = DashIconify(id="icon_git", icon="akar-icons:github-fill", width=40),
-                                variant="transparent",
-                                size="xl",
-                                # style = {'color':'#e12024'}, 
-                                style = {'color':'black', 'justifyContent':'end !important'}, 
-                            ),
-                            href = "https://github.com/EURAC-EEBgroup/brick-llm/tree/main",
-                            target="_blank"
+                        dmc.Menu(
+                            [
+                                dmc.MenuTarget(
+                                dmc.ActionIcon(
+                                    id="github",
+                                    children = DashIconify(id="icon_git", icon="akar-icons:github-fill", width=40),
+                                    variant="transparent",
+                                    size="xl",
+                                    # style = {'color':'#e12024'}, 
+                                    style = {'color':'black', 'justifyContent':'end !important'}, 
+                                ),
+                                ),
+                                dmc.MenuDropdown(
+                                    children = [
+                                        dmc.MenuItem(
+                                            "BrickLLM - App ",
+                                            href = "https://github.com/EURAC-EEBgroup/Brick_ontology_tool",
+                                            target="_blank",
+                                            leftSection=DashIconify(icon="carbon:application-web"),
+                                        ),
+                                        dmc.MenuItem(
+                                            "BrickLLM - Library ",
+                                            href = "https://github.com/EURAC-EEBgroup/brick-llm/tree/main",
+                                            target="_blank",
+                                            leftSection=DashIconify(icon="mdi:source-repository"),
+                                        )
+
+                                    ]
+                                )
+                            ]
                         ),
+                        # dmc.Anchor(
+                        #     dmc.ActionIcon(
+                        #         id="github",
+                        #         children = DashIconify(id="icon_git", icon="akar-icons:github-fill", width=40),
+                        #         variant="transparent",
+                        #         size="xl",
+                        #         # style = {'color':'#e12024'}, 
+                        #         style = {'color':'black', 'justifyContent':'end !important'}, 
+                        #     ),
+                        #     href = "https://github.com/EURAC-EEBgroup/brick-llm/tree/main",
+                        #     target="_blank"
+                        # ),
                         dmc.Menu(
                             id="menu_mobile",
                             children = [

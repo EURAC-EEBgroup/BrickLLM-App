@@ -1,6 +1,5 @@
-from dash import html, dcc
 import  dash_mantine_components as dmc
-from dash_iconify import DashIconify
+
 
 
 data_llm_local = [["lama", "Lama"], ["a", "..."], ["b", "..."]]

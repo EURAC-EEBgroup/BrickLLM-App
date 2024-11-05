@@ -1,7 +1,5 @@
 from dash import Input, Output, State, callback
 
-
-
 @callback(
     Output("mantine-provider", "forceColorScheme"),
     Input("color-scheme-toggle", "n_clicks"),

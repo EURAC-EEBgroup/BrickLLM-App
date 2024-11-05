@@ -1,5 +1,5 @@
 import dash_mantine_components as dmc
-from dash import html, get_relative_path, dcc
+from dash import html
 
 Footer =  dmc.AppShellFooter(
     id="footer__",
@@ -108,7 +108,7 @@ Footer =  dmc.AppShellFooter(
                                             href = "/terms&condition",
                                             title="Terms",
                                             children=[
-                                                html.Span("Terms")
+                                                html.Span("Terms and Condition")
                                             ],
                                             target="_blank"
                                         )

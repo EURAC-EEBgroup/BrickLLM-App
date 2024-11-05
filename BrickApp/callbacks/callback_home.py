@@ -12,6 +12,8 @@ from brickllm.graphs import BrickSchemaGraph, BrickSchemaGraphLocal
 import io
 import sys
 import os
+import time
+import random
 
 log_buffer = io.StringIO()
 
@@ -281,8 +283,7 @@ def hide_run_button(valPrompt, stateDisplay):
 # ================================================
 #           FAKE FUNCTION for testing 
 # ================================================
-import time
-import random
+
 def dummy_simulation():
     for i in range(30):
         print(f"asdgasdgasg {i}")
