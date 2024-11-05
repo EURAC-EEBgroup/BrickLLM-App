@@ -2,24 +2,24 @@
   <img src="BrickApp/assets/brickllm_banner.png" alt="BrickLLM" style="width: 100%;">
 </p>
 
-# 🧱 BrickLLM
+# 🧱 BrickLLM App
 
-BrickLLM is a web app for generating RDF files following the BrickSchema ontology using Large Language Models (LLMs). It is based on the python library BrickLLM
+BrickLLM is a web app for generating RDF files following the BrickSchema ontology using Large Language Models (LLMs). It is based on the python library BrickLLM - [pypi](https://pypi.org/project/brickllm/) and [github](https://github.com/EURAC-EEBgroup/brick-llm)
 
-Citation
-----------
+## Citation
 Please cite us if you use the library
 
-.. image:: https://zenodo.org/badge/761715706.svg
-  :target: https://zenodo.org/doi/10.5281/zenodo.10887919
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14039358.svg)](https://zenodo.org/doi/10.5281/zenodo.14039358)
+
 
 
 # Brief description
 The open-source python web app has been developed using [Dash plotly](https://dash.plotly.com/) and the [dash mantine components](https://www.dash-mantine-components.com/). The tool can be used:
-- [] directly through the website hosted by [Eurac Reserch](https://https://www.eurac.edu/en/institutes-centers/institute-for-renewable-energy/research-group/energy-efficient-buildings/) at the following link
-- [] or on-premises.
 
-# On-premises
+  - directly through the website hosted by [Eurac Reserch](https://https://www.eurac.edu/en/institutes-centers/institute-for-renewable-energy/research-group/energy-efficient-buildings/) at the following link
+  - on-premises.
+
+## On-premises
 It is recommended to use a virtual environment such as Pipenv or Pyenv. For example: 
 
 ``` bash
@@ -56,7 +56,7 @@ or create and use a docker container:
 
 # Example
 
-## Possible issue running in Mac:
+### Possible issue running in Mac:
 
 If there are these allerts
 ``` bash 
