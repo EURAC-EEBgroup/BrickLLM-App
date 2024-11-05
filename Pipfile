@@ -4,17 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pywebview = "*"
 dash-mantine-components = "*"
 dash-iconify = "*"
 pandas = "*"
-py2app = "*"
 setuptools = "==70.3.0"
 pipfile = "*"
 celery = "*"
 diskcache = "*"
 dash = {extras = ["diskcache"], version = "*"}
-brickllm = {file = "dist_brick_local/brickllm-0.0.1.tar.gz"}
+brickllm = "*"
 gunicorn = "*"
 redis = "*"
 
