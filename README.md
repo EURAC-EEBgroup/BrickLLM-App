@@ -22,15 +22,14 @@ The open-source python web app has been developed using [Dash plotly](https://da
 # On-premises deployment
 It is recommended to use a virtual environment such as Pipenv or Pyenv. The tool is currently tested with Python 3.12.6. After installing the required libraries using the command 
 
-````
-    pip install -r requirements.txt
-```    
+``` bash
+pip install -r requirements.txt
+```
 
 the application will start running the command inside the folder BrickApp
 
-```
+``` bash
 python app.py
-
 ```
 
 # Example
