@@ -31,8 +31,8 @@ header_flex = dmc.Flex(
                             target="_blank"
                         ),
                         dmc.Anchor(
-                            dmc.MenuItem("Aknowledgments", leftSection=DashIconify(icon="ph:hands-praying-duotone")),
-                            href = get_relative_path("/aknowledgments"),
+                            dmc.MenuItem("Acknowledgements", leftSection=DashIconify(icon="ph:hands-praying-duotone")),
+                            href = get_relative_path("/acknowledgements"),
                             target="_blank"
                         )
                     ]

@@ -58,7 +58,7 @@ def remove_menu_no_home_page(href):
     parsed_url = urlparse(href)
     # Extract the path
     path = parsed_url.path
-    if path == get_relative_path("/contact") or path == get_relative_path("/terms&condition") or path == get_relative_path("/aknowledgments"):
+    if path == get_relative_path("/contact") or path == get_relative_path("/terms&condition") or path == get_relative_path("/acknowledgements"):
         return display_no,display_no
     else:
         return dispaly_block, dispaly_block

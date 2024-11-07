@@ -90,7 +90,7 @@ For any questions or support, please contact:
 - Marco Perini <marco.perini@eurac.edu>
 - Rocco Giudice <rocco.giudice@polito.it>
 
-## 💙 Aknwoldgments
+## 💙 Acknowledgements
 This work was carried out within European projects: 
 
 <p align="center">

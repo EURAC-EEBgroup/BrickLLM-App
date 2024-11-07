@@ -2,7 +2,7 @@ from dash import html, get_relative_path
 import dash_mantine_components as dmc
 import dash 
 from dash_iconify import DashIconify
-dash.register_page(__name__,path_template=f"/aknowledgments")
+dash.register_page(__name__,path_template=f"/acknowledgements")
 
 developed_by = dmc.Stack(
     children = [
@@ -75,7 +75,7 @@ thanks_to = dmc.Stack(
 layout_ = dmc.Container(
     mt=90, 
     children = [
-        dmc.Text("AKNOWLEDGMENTS",id="text1", opacity=0.7, fw=700, c="black"),
+        dmc.Text("ACKNOWLEDGEMENTS",id="text1", opacity=0.7, fw=700, c="black"),
         dmc.Title("BRICK - LLM", id="text2",lh=1.2, order=3, mt="xs", fw=900, c="black"),
         dmc.Divider(variant = "solid", size="lg", mt=20, color="grey", pt=20, pl=20, pr=20),
         developed_by,
