@@ -560,14 +560,15 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                     dmc.Flex(
                         children = [
                             dmc.ThemeIcon(
-                                children = DashIconify(icon="humbleicons:user-asking", width=45),
+                                children = DashIconify(icon="fluent-color:chat-bubbles-question-16", width=45),
                                 radius = "lg",
                                 variant= "outline",
                                 color="black",
                                 style = {
-                                    'border':"1px solid lightgrey",
-                                    "transition": "boxShadow 0.3s ease",
-                                    "boxShadow": "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                                    'border':"0px",
+                                    # 'border':"1px solid lightgrey",
+                                    # "transition": "boxShadow 0.3s ease",
+                                    # "boxShadow": "0px 4px 6px rgba(0, 0, 0, 0.2)",
 
                                     },
                                 size="lg"
@@ -615,15 +616,9 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                                         disabled=True,
                                     ),
                                     dcc.Download(id={"type": "download_ttl", "index": n_clicks})
-                                    # dcc.Interval(id='log-output-interval-text', interval=100, n_intervals=0),
-                                    # dcc.Interval(
-                                    #     id='log-output-interval',
-                                    #     interval=100,  # in milliseconds
-                                    #     n_intervals=0  # initial number of intervals
-                                    # ),
+
                                     
                                 ],
-                                # align="flex-start"
                             )
                         ],
                         style = {
