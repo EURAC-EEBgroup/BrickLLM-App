@@ -1920,15 +1920,19 @@ th {
   }
 }
 
+@media only screen and (min-device-width:1400px){
+  #menu_mobile-target {
+    display: none;
+  }
+
+  #menu_mobile_button {
+    display: none;
+  }
+}
 
 @media only screen and (min-device-width: 1200px) and (max-device-width: 1400px){
 
-  /* #burger_mobile {
-    display: none;
-  } */
-  /* #menu_mobile_button {
-    display: none;
-  } */
+  
   #first-child-wrap {
     max-height: calc(100vh - 56vh);
     overflow-y: auto; 
@@ -1951,10 +1955,7 @@ th {
 }
 
 @media screen and (max-width: 1400px) {
-  /* #burger_mobile {
-    display: block;
-  } */
-
+  
   #header_app {
     padding-top:10px !important
   }
@@ -2007,7 +2008,7 @@ th {
 
 
 #ontology-container-div {
-  max-height: calc(100vh - var(--vh-subtract)) !important; 
+  height: calc(100vh - var(--vh-subtract));
 }
 /* @media only screen and (min-device-height:200px) and (max-device-height:860px){
   #ontology-container-div {
@@ -2086,9 +2087,9 @@ th {
     display: none !important;
   }
 
-  #ontology-container-div {
+  /* #ontology-container-div {
     max-height: calc(100vh - 40vh) !important; 
-  }
+  } */
 
   /* .promtp_flex_not_disabled {
     margin: 20px;

@@ -560,7 +560,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                     dmc.Flex(
                         children = [
                             dmc.ThemeIcon(
-                                children = DashIconify(icon="fluent-color:chat-bubbles-question-16", width=45),
+                                children = DashIconify(icon="fluent-color:chat-bubbles-question-16", width=55),
                                 radius = "lg",
                                 variant= "outline",
                                 color="black",
@@ -571,7 +571,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                                     # "boxShadow": "0px 4px 6px rgba(0, 0, 0, 0.2)",
 
                                     },
-                                size="lg"
+                                size="xl"
                             ),
                             dmc.Paper(
                                 id="text_prompt_question",
