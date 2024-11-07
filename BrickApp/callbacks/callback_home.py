@@ -430,7 +430,7 @@ def enable_ttl_download_btn(data, ids):
 
     filename = f"brick_{(len(ids))}.ttl"
     if filename in data and data[filename]: 
-        btns[-1]=False # update only last button
+        btns[0]=False # update only last button
 
     return btns 
 
