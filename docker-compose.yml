@@ -11,10 +11,11 @@ services:
 
   celery: 
     image: brick:dev
-    command: celery -A app.celery_app worker -P threads --loglevel=INFO
+    command: celery -A app.celery_app worker --loglevel=INFO
     depends_on:
       - brick_ontology_tool
       - redis
+
 
   redis:
     image: 'redis:3.0-alpine'
