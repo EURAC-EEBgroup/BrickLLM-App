@@ -43,7 +43,6 @@ server.config.update(
 
 
 from components.header import Header
-from components.drawer import Drawer
 from components.footer import Footer
 
 from callbacks import (callback_header, callback_settings, callback_home)
@@ -63,20 +62,19 @@ app.layout = dmc.MantineProvider(
             header={"height": 80},
             children=[
                 Header,
-                Drawer,
                 dash.page_container,
                 Footer,
             ],
             padding="xl",
-            aside={
-                "width": 300,
-                "breakpoint": "xl",
-                "collapsed": {"desktop": False, "mobile": True},
-            },
+            # aside={
+            #     "width": 300,
+            #     "breakpoint": "xl",
+            #     "collapsed": {"desktop": False, "mobile": True},
+            # },
         )
     ]
 )
 
 if __name__ == '__main__':
     '''Run Dash application (Development)'''
-    app.run_server(debug=False, port=8091, dev_tools_hot_reload=False)
+    app.run_server(debug=True, port=8093, dev_tools_hot_reload=False)

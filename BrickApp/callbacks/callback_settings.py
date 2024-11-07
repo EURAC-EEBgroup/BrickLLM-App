@@ -1,4 +1,4 @@
-from dash import Output, Input, State, ctx, callback
+from dash import Output, Input, State, ctx, callback, get_relative_path
 from dash.exceptions import PreventUpdate 
 from urllib.parse import urlparse
 
@@ -48,13 +48,17 @@ def types_of_llm_to_be_used(llm_selected):
 
 
 @callback(
+    Output("menu_mobile","style"),
     Output("burger_mobile","style"),
-    Output("menu_mobile_button","style"),
-    Input("url_app","href")
+    Input("url_app", "href")
 )
-def delete_burger_drawer_contact(url):
-    style_ = {'display':'none'}
-    style_b = {'display':'block'}
-    if urlparse(url).path=="/contact":
-        return style_, style_
-    raise PreventUpdate
+def remove_menu_no_home_page(href):
+    display_no = {'display':'none'}
+    dispaly_block = {'display': 'block'}
+    parsed_url = urlparse(href)
+    # Extract the path
+    path = parsed_url.path
+    if path == get_relative_path("/contact") or path == get_relative_path("/terms&condition") or path == get_relative_path("/aknowledgments"):
+        return display_no,display_no
+    else:
+        return dispaly_block, dispaly_block

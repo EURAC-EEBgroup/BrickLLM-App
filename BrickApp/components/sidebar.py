@@ -80,39 +80,39 @@ layout_ = dmc.Container(
         ),
             
         dmc.Divider(variant="solid",size="lg", mt=20, color="grey", pt=20, pl=20, pr=20, w="100%"),
-        daq.ToggleSwitch(
-            id='btn_confirm_model',
-            value=False,
-            label="Confirm selection",
-            labelPosition ="bottom",
-            color="rgb(6, 157, 201)",
-            theme="dark",
-            persistence=True,
-            persistence_type="session" 
-        ),
-        # dmc.Switch(
-        #     id = "btn_confirm_model",
-        #     size="md",
-        #     radius="xl",
-        #     label=dmc.Text(id="confirmSelection", children = "Confirm selection"),
-        #     checked=False,  
+        # daq.ToggleSwitch(
+        #     id='btn_confirm_model',
+        #     value=False,
+        #     label="Confirm selection",
+        #     labelPosition ="bottom",
         #     color="rgb(6, 157, 201)",
+        #     theme="dark",
         #     persistence=True,
-        #     persistence_type="session"        
+        #     persistence_type="session" 
         # ),
+        dmc.Switch(
+            id = "btn_confirm_model",
+            size="md",
+            radius="xl",
+            label=dmc.Text(id="confirmSelection", children = "Confirm selection"),
+            checked=False,  
+            color="rgb(6, 157, 201)",
+            persistence=True,
+            persistence_type="session"        
+        ),
         html.Div(id="local_warning_time")
     ]
 )
 
-Sidebar = dmc.AppShellAside(
-    id="sidebar_",
-    children = [
-        dmc.Stack(
-            id="test",
-            children = [
-                layout_
-            ]
-        )
-    ]
-)
+# Sidebar = dmc.AppShellAside(
+#     id="sidebar_",
+#     children = [
+#         dmc.Stack(
+#             id="test",
+#             children = [
+#                 layout_
+#             ]
+#         )
+#     ]
+# )
 

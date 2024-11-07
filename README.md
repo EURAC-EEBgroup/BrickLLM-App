@@ -90,4 +90,12 @@ For any questions or support, please contact:
 - Marco Perini <marco.perini@eurac.edu>
 - Rocco Giudice <rocco.giudice@polito.it>
 
+## 💙 Aknwoldgments
+This work was carried out within European projects: 
+
+<p align="center">
+  <img src="BrickApp/assets/moderate_logo.png" alt="BrickLLM" style="width: 100%;">
+</p>
+
+Moderate - Horizon Europe research and innovation programme under grant agreement No 101069834, with the aim of contributing to the development of open products useful for defining plausible scenarios for the decarbonization of the built environment
 

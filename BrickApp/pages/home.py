@@ -2,7 +2,6 @@ import dash
 from dash import html, dcc, get_relative_path
 import  dash_mantine_components as dmc
 from dash_iconify import DashIconify
-from components.sidebar import Sidebar
 from components.sidebar import layout_ as layout_sidebar
 
 dash.register_page(__name__, path='/')
@@ -30,11 +29,21 @@ layout_ = html.Div(
                             dmc.Flex(
                                 id="prompt_flex",
                                 children = [
-                                    dcc.Textarea(
+                                    # dcc.Textarea(
+                                    #     id="prompt_command_ontology",  
+                                    #     value = prompt_text_example,
+                                    #     placeholder = "Describe your building, systems, sensors, database, etc.",
+                                    #     contentEditable = True, 
+                                    #     autosize=True
+                                    # ),
+                                    dmc.Textarea(
                                         id="prompt_command_ontology",  
-                                        # value = prompt_text_example,
+                                        value = prompt_text_example,
                                         placeholder = "Describe your building, systems, sensors, database, etc.",
-                                        contentEditable = True, 
+                                        # contentEditable = True, 
+                                        autosize=True,
+                                        minRows=1,
+                                        w="100%"
                                     ),
                                     dmc.ActionIcon(
                                         id="btn_icon_ontology",
@@ -44,7 +53,7 @@ layout_ = html.Div(
                                     ),
                                     dmc.ActionIcon(
                                         id="btn_ontology_stop",
-                                        children = DashIconify(id="icon_stop",icon="ic:round-stop", width=25, rotate=1, color="white"),
+                                        children = DashIconify(id="icon_stop",icon="ic:round-stop",rotate=1, color="white", style = {'width':'2rem'}),
                                         size="xl",
                                         variant="light",
                                         radius="xl",
@@ -72,12 +81,18 @@ layout_ = html.Div(
                 ),
                 dmc.Drawer(
                     id="drawer-simple",
-                    padding="md",                    
-                    children = [layout_sidebar]
+                    padding="md",   
+                    mt=0,                 
+                    position="right",
+                    children = [
+                        layout_sidebar,    
+                    ],
+                    style = {'zIndex':1000}
                 ),
             ]
         ),
-    ]
+    ],
+    style = {"width":"100%"}
 )
 
 dynamic_background = html.Iframe(
@@ -99,14 +114,9 @@ dynamic_background = html.Iframe(
 overall_layout = dmc.AppShellMain(
     [
         dynamic_background,
-        html.Div(
-            [
-                layout_,
-                Sidebar
-            ]
-        )
+        # layout_,
+        html.Div([layout_,],style = {'justifyItems':'center'})
     ]
-    
 ),
 
 

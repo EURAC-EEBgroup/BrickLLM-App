@@ -6,16 +6,39 @@ from dash_iconify import DashIconify
 
 header_flex = dmc.Flex(
     children = [
-        dmc.ActionIcon(
-            id= "burger_mobile",
-            children = DashIconify(id="icon_burger",icon="circum:menu-burger", width=20, color="black"),
-            variant="transparent",
-            size="xl",
-            mb=10,
-            style = {
-                'position':'absolute',
-                'left':'0px'
-            }
+        dmc.Menu(
+            id="menu_mobile",
+            children = [
+                dmc.MenuTarget(
+                    dmc.ActionIcon(
+                        id="menu_mobile_button",
+                        children = DashIconify(id="icon_menu_mobile", icon="ph:dots-three-vertical-bold", width=40),
+                        variant="transparent",
+                        size="xl", 
+                        style = {'color':'black'},
+                    ),  
+                ),
+                dmc.MenuDropdown(
+                    [
+                        dmc.Anchor(
+                            dmc.MenuItem("Terms and Condition", leftSection=DashIconify(icon="hugeicons:legal-02")),
+                                href=get_relative_path("/terms&condition"),
+                            target="_blank"
+                        ),
+                        dmc.Anchor(
+                            dmc.MenuItem("Contact", leftSection=DashIconify(icon="weui:contacts-outlined")),
+                            href = get_relative_path("/contact"),
+                            target="_blank"
+                        ),
+                        dmc.Anchor(
+                            dmc.MenuItem("Aknowledgments", leftSection=DashIconify(icon="ph:hands-praying-duotone")),
+                            href = get_relative_path("/aknowledgments"),
+                            target="_blank"
+                        )
+                    ]
+                )
+            ],
+            zIndex = 1000,
         ),
         dmc.Grid(
             children = [
@@ -49,18 +72,19 @@ header_flex = dmc.Flex(
                 dmc.GridCol(
                     children = [
                         dmc.Menu(
-                            [
+                            children = [
                                 dmc.MenuTarget(
-                                dmc.ActionIcon(
-                                    id="github",
-                                    children = DashIconify(id="icon_git", icon="akar-icons:github-fill", width=40),
-                                    variant="transparent",
-                                    size="xl",
-                                    # style = {'color':'#e12024'}, 
-                                    style = {'color':'black', 'justifyContent':'end !important'}, 
-                                ),
+                                    dmc.ActionIcon(
+                                        id="github",
+                                        children = DashIconify(id="icon_git", icon="akar-icons:github-fill", width=40),
+                                        variant="transparent",
+                                        size="xl",
+                                        # style = {'color':'#e12024'}, 
+                                        style = {'color':'black', 'justifyContent':'end !important'}, 
+                                    ),
                                 ),
                                 dmc.MenuDropdown(
+                                    id="menuDrop",
                                     children = [
                                         dmc.MenuItem(
                                             "BrickLLM - App ",
@@ -74,40 +98,18 @@ header_flex = dmc.Flex(
                                             target="_blank",
                                             leftSection=DashIconify(icon="mdi:source-repository"),
                                         )
-
-                                    ]
+                                    ],
                                 )
-                            ]
+                            ],
+                            zIndex = 1000,
                         ),
-                        dmc.Menu(
-                            id="menu_mobile",
-                            children = [
-                                dmc.MenuTarget(
-                                    dmc.ActionIcon(
-                                        id="menu_mobile_button",
-                                        children = DashIconify(id="icon_menu_mobile", icon="ph:dots-three-vertical-bold", width=40),
-                                        variant="transparent",
-                                        size="xl", 
-                                        style = {'color':'black'},
-                                    ),  
-                                ),
-                                dmc.MenuDropdown(
-                                    [
-                                        dmc.Anchor(
-                                            dmc.MenuItem("Terms and Condition", leftSection=DashIconify(icon="hugeicons:legal-02")),
-                                             href=get_relative_path("/terms&condition"),
-                                            target="_blank"
-                                        ),
-                                        dmc.Anchor(
-                                            dmc.MenuItem("Contact", leftSection=DashIconify(icon="weui:contacts-outlined")),
-                                            href = get_relative_path("/contact"),
-                                            target="_blank"
-                                        )
-                                    ]
-                                )
-                            ]
-                        )
-                        
+                        dmc.ActionIcon(
+                            id= "burger_mobile",
+                            children = DashIconify(id="icon_burger",icon="circum:menu-burger", width=20, color="black"),
+                            variant="transparent",
+                            size="xl",
+                            mb=10,
+                        ),
                     ],
                     style = {
                         'position':'absolute',

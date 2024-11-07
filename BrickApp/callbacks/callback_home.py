@@ -3,6 +3,7 @@ from dash.exceptions import PreventUpdate
 from dash_iconify import DashIconify
 import dash_mantine_components as dmc
 import dash
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -54,18 +55,18 @@ if ttl_output:
 '''
 
 
-clientside_callback(
-    """
-    function(value) {
-        var textarea = document.getElementById('prompt_command_ontology');
-        textarea.style.height = 'auto';  // Reset height to auto to recalculate
-        textarea.style.height = textarea.scrollHeight + 'px';  // Set height to scrollHeight
-        return value;  // Return the value to keep the callback functional
-    }
-    """,
-    Output('prompt_command_ontology', 'value'),
-    Input('prompt_command_ontology', 'value')
-)
+# clientside_callback(
+#     """
+#     function(value) {
+#         var textarea = document.getElementById('prompt_command_ontology');
+#         textarea.style.height = 'auto';  // Reset height to auto to recalculate
+#         textarea.style.height = textarea.scrollHeight + 'px';  // Set height to scrollHeight
+#         return value;  // Return the value to keep the callback functional
+#     }
+#     """,
+#     Output('prompt_command_ontology', 'value'),
+#     Input('prompt_command_ontology', 'value')
+# )
 
 
 clientside_callback(
@@ -93,7 +94,7 @@ notification_text = dmc.Notification(
     )
 @callback(
     Output("notifications-container", "children"),
-    Input("btn_confirm_model","value"),
+    Input("btn_confirm_model","checked"),
     State("llm_model_type","value"),
     State("api-key_value","value"),
     prevent_initial_call=True,
@@ -156,9 +157,10 @@ def text_time_warning(model_):
     Output("llm_model_version","disabled"),
     Output("api-key_value","disabled"),
     Output("llm_model_local_huggin","disabled"),
-    Input("btn_confirm_model","value"),
+    Input("btn_confirm_model","checked"),
+    State("api-key_value","value"),
 )
-def block_selection(btn):
+def block_selection(btn, APikey):
     if btn:
         return True, True, True, True, True
     return False, False, False, False, False, 
@@ -170,7 +172,7 @@ def block_selection(btn):
     Output("btn_icon_ontology","disabled"),
     Output("prompt_flex","className"),
     Output("btn_icon_ontology","className"),
-    Input("btn_confirm_model","value"),
+    Input("btn_confirm_model","checked"),
     State("llm_model_type","value"),
     State("api-key_value","value")
 )
@@ -544,7 +546,9 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
     component = dmc.Center(
         id={"type": "card", "index": index},
         style = {
-            'zIndex':'1000',
+            'zIndex':'1',
+            'width':"100%",
+            'maxWidth':'100%'
             # 'marginLeft':'auto',
             # 'marginRight':'2rem',
             },
@@ -576,6 +580,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                                 shadow="lg",
                                 radius="lg",
                                 p="lg",
+                                style = {'fontSize':'1rem'}
                             ),
                         ],
                         gap={"base": "sm", "sm": "lg"},
@@ -584,17 +589,22 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                         showLabel="Show more",
                         hideLabel="Hide",
                         maxHeight=100,
+                        expanded = True,
                         # mb=10,
                         children=[
                             dmc.Stack(
                                 children = [
-                                    dmc.Text(
-                                        id={'type':'log_output_text', 'index':index},
-                                        # id='log_output_text',
-                                        mt=5,
-                                        mb=5,
-                                        c="black",
-                                        style={'whiteSpace': 'pre-line'}
+                                    dmc.ScrollArea(
+                                        children = [
+                                            dmc.Text(
+                                                id={'type':'log_output_text', 'index':index},
+                                                mt=5,
+                                                mb=5,
+                                                c="black",
+                                                style={'whiteSpace': 'pre-line','fontSize':'1rem'}
+                                            ),
+                                        ],
+                                        type="hover"
                                     ),
                                     dmc.Button(
                                         id={"type": "btn_attachment", "index": n_clicks},
@@ -602,7 +612,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                                         leftSection= DashIconify(icon="hugeicons:attachment-square", width=20, color="grey"),
                                         variant="transparent",
                                         n_clicks=0,
-                                        disabled=True
+                                        disabled=True,
                                     ),
                                     dcc.Download(id={"type": "download_ttl", "index": n_clicks})
                                     # dcc.Interval(id='log-output-interval-text', interval=100, n_intervals=0),
@@ -613,7 +623,7 @@ def text_element_with_file(input_request:str, btn_name_ttl:str, n_clicks, index)
                                     # ),
                                     
                                 ],
-                                align="flex-start"
+                                # align="flex-start"
                             )
                         ],
                         style = {
@@ -693,3 +703,6 @@ def toggle_drawer(n_clicks, is_opened):
     if n_clicks:
         return not is_opened  # Toggle the state of the drawer
     return is_opened  # Return the current state if no clicks yet
+
+
+

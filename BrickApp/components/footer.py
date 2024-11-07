@@ -5,7 +5,7 @@ from dash import html, get_relative_path
 Footer =  dmc.AppShellFooter(
     id="footer__",
     h=180,
-    zIndex=1000, 
+    zIndex=1001, 
     withBorder=True,
     children=[
         dmc.Container(
@@ -18,7 +18,7 @@ Footer =  dmc.AppShellFooter(
                                 dmc.Center(
                                     children = [
                                         dmc.Anchor(
-                                            href = "www.eurac.edu",
+                                            href = "https://moderate-project.eu/",
                                             children = [
                                                 dmc.Image(
                                                     src = get_relative_path("/assets/moderate_logo.png"),
