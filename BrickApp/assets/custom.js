@@ -5,7 +5,23 @@ function calculateVhSubtraction() {
     let vhSubtract;
 
     if (screenWidth > 1400) {
-        if (screenHeight >= 800 && screenHeight < 850) {
+        if (screenHeight >= 450 && screenHeight < 500) {
+            vhSubtract = 89;
+        } else if (screenHeight >= 500 && screenHeight < 530) {
+            vhSubtract = 82;
+        } else if (screenHeight >= 530 && screenHeight < 560) {
+            vhSubtract = 79;
+        } else if (screenHeight >= 560 && screenHeight < 600) {
+            vhSubtract = 76;
+        } else if (screenHeight >= 600 && screenHeight < 650) {
+            vhSubtract = 72;
+        } else if (screenHeight >=  650 && screenHeight < 700) {
+            vhSubtract = 67;
+        } else if (screenHeight >=  700 && screenHeight < 750) {
+            vhSubtract = 64;
+        } else if (screenHeight >=  750 && screenHeight < 800) {
+            vhSubtract = 61;
+        } else if (screenHeight >= 800 && screenHeight < 850) {
             vhSubtract = 59;
         } else if (screenHeight >= 850 && screenHeight < 900) {
             vhSubtract = 57;
@@ -45,6 +61,8 @@ function calculateVhSubtraction() {
             vhSubtract = 25;
         } else if (screenHeight >= 1650) {
             vhSubtract = 23;
+        } else {
+
         }
     }
 
@@ -84,3 +102,4 @@ function typeWriterEffect(text, elementId, speed = 100) {
 document.addEventListener('startTypewriter', function (e) {
     typeWriterEffect(e.detail.text, e.detail.elementId, e.detail.speed);
 });
+

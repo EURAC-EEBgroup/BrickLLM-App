@@ -26,9 +26,12 @@ layout_ = html.Div(
                         id="query_prompt",
                         direction="column",
                         children = [
+                            # html.Div(id="typewriter-text", style={'fontSize': '24px', 'marginTop': '20px', 'textAlign': 'center'}),
+                            dmc.Text(id="typewriter-text", style={'fontSize': '1.5rem', 'marginBottom': '10px', 'textAlign': 'center'}, fw=600),
                             dmc.Flex(
                                 id="prompt_flex",
                                 children = [
+                                    # Div to hold the text with a unique ID
                                     # dcc.Textarea(
                                     #     id="prompt_command_ontology",  
                                     #     value = prompt_text_example,
@@ -38,7 +41,7 @@ layout_ = html.Div(
                                     # ),
                                     dmc.Textarea(
                                         id="prompt_command_ontology",  
-                                        value = prompt_text_example,
+                                        value = "",
                                         placeholder = "Describe your building, systems, sensors, database, etc.",
                                         # contentEditable = True, 
                                         autosize=True,

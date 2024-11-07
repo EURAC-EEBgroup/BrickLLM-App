@@ -55,18 +55,33 @@ if ttl_output:
 '''
 
 
-# clientside_callback(
-#     """
-#     function(value) {
-#         var textarea = document.getElementById('prompt_command_ontology');
-#         textarea.style.height = 'auto';  // Reset height to auto to recalculate
-#         textarea.style.height = textarea.scrollHeight + 'px';  // Set height to scrollHeight
-#         return value;  // Return the value to keep the callback functional
-#     }
-#     """,
-#     Output('prompt_command_ontology', 'value'),
-#     Input('prompt_command_ontology', 'value')
-# )
+clientside_callback(
+    """
+    function(inputValue) {
+        var element = document.getElementById("typewriter-text");
+
+        if (!inputValue || inputValue.trim() === "") {
+            // Show the typewriter text and start typing "How can I help you?"
+            element.style.display = "block";
+            var event = new CustomEvent('startTypewriter', {
+                detail: {
+                    text: " Describe your building and I will give you the Brick ontological model. ",
+                    elementId: "typewriter-text",
+                    speed: 30
+                }
+            });
+            document.dispatchEvent(event);
+        } else {
+            // Hide the typewriter text if input has content
+            element.style.display = "none";
+        }
+        return "";
+    }
+    """,
+    Output("typewriter-text", "children"),
+    Input("prompt_command_ontology", "value")
+)
+
 
 
 clientside_callback(
