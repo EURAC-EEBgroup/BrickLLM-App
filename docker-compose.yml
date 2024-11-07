@@ -15,27 +15,12 @@ services:
     depends_on:
       - brick_ontology_tool
       - redis
-    # extra_hosts:
-    #   - "host.docker.internal:host-gateway"
-
-
-  monitor:
-    image: brick:dev
-    ports:
-     - "5555:5555"
-    command: celery -A app.celery_app beat --loglevel=INFO
-    # env_file:
-    #   - .env
-    depends_on:
-      - brick_ontology_tool
-      - redis
-    # extra_hosts:
-    #   - "host.docker.internal:host-gateway"
-
 
   redis:
     image: 'redis:3.0-alpine'
-    command: redis-server
+    command: redis-server --port 6380
+    ports: 
+    - "6380:6380"
     volumes:
       - 'redis:/data'
 

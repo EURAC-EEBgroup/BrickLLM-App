@@ -6,8 +6,8 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHON UNBUFFERED 1
 ENV DOCKER_RUNNING True
-ENV REDIS_URL_BROKER 'redis://redis:6379/0'
-ENV REDIS_URL_BACKEND 'redis://redis:6379/1'
+ENV REDIS_URL_BROKER 'redis://redis:6380/0'
+ENV REDIS_URL_BACKEND 'redis://redis:6380/1'
 
 RUN apt-get update && apt-get install -y \
     build-essential
