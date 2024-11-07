@@ -1921,7 +1921,7 @@ th {
 }
 
 
-@media only screen and (min-device-width: 1200px) and (max-device-width: 10000px){
+@media only screen and (min-device-width: 1200px) and (max-device-width: 1400px){
 
   /* #burger_mobile {
     display: none;
@@ -2004,6 +2004,35 @@ th {
   }
 }
 
+
+
+#ontology-container-div {
+  max-height: calc(100vh - var(--vh-subtract)) !important; 
+}
+/* @media only screen and (min-device-height:200px) and (max-device-height:860px){
+  #ontology-container-div {
+    max-height: calc(100vh - 58vh) !important; 
+  }
+}
+
+@media only screen and (min-device-height:861px) and (max-device-height:1400px){
+  #ontology-container-div {
+    max-height: calc(100vh - 28vh) !important; 
+  }
+}
+
+@media only screen and (min-device-height:1401px) and (max-device-height:10000px){
+  #ontology-container-div {
+    max-height: calc(100vh - 38vh) !important; 
+  }
+} */
+
+
+/* @media only screen and (min-device-width:1401px) and (max-device-height:10000px){
+  #ontology-container-div {
+    max-height: calc(100vh - var(--subtracted-vh)) !important; 
+  }
+} */
 
 @media only screen and (device-width: 1368px) and (device-height: 912px),
        only screen and (max-device-width: 1281px) and (max-device-height: 801px),
