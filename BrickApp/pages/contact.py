@@ -66,7 +66,7 @@ name_contact = html.Div(
         
         dmc.Stack(
             [ email_contact("daniele.antonucci@eurac.edu", "Daniele Antonucci"),
-            email_contact("marco.perinit@eurac.edu", "Marco Perini"),
+            email_contact("marco.perini@eurac.edu", "Marco Perini"),
             email_contact("olga.somova@eurac.edu", "Olga Somova"),
             ]
         ),

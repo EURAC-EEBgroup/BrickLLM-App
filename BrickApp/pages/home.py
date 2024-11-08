@@ -26,28 +26,29 @@ layout_ = html.Div(
                         id="query_prompt",
                         direction="column",
                         children = [
-                            # html.Div(id="typewriter-text", style={'fontSize': '24px', 'marginTop': '20px', 'textAlign': 'center'}),
-                            dmc.Text(id="typewriter-text", style={'fontSize': '1.5rem', 'marginBottom': '10px', 'textAlign': 'center'}, fw=600),
+                            html.Div(id="typewriter_text", style={'fontSize': '1.5rem', 'marginTop': '20px', 'textAlign': 'center', 'fontWeight':'600','zIndex':'100'}),
+                            # dmc.Text(id="typewriter_text", 
+                            #          style={'fontSize': '1.5rem', 'marginBottom': '10px', 'textAlign': 'center'}, fw=600),
                             dmc.Flex(
                                 id="prompt_flex",
                                 children = [
                                     # Div to hold the text with a unique ID
-                                    # dcc.Textarea(
-                                    #     id="prompt_command_ontology",  
-                                    #     value = prompt_text_example,
-                                    #     placeholder = "Describe your building, systems, sensors, database, etc.",
-                                    #     contentEditable = True, 
-                                    #     autosize=True
-                                    # ),
-                                    dmc.Textarea(
+                                    dcc.Textarea(
                                         id="prompt_command_ontology",  
+                                        # value = prompt_text_example,
                                         value = "",
                                         placeholder = "Describe your building, systems, sensors, database, etc.",
-                                        # contentEditable = True, 
-                                        autosize=True,
-                                        minRows=1,
-                                        w="100%"
+                                        contentEditable = True, 
                                     ),
+                                    # dmc.Textarea(
+                                    #     id="prompt_command_ontology",  
+                                    #     # value = "",
+                                    #     placeholder = "Describe your building, systems, sensors, database, etc.",
+                                    #     # contentEditable = True, 
+                                    #     autosize=True,
+                                    #     minRows=1,
+                                    #     w="100%"
+                                    # ),
                                     dmc.ActionIcon(
                                         id="btn_icon_ontology",
                                         children = DashIconify(id="icon_run", icon="fa6-solid:trowel-bricks",width=25, rotate=1, color="white", flip="vertical", style = {'backgroundcolor':'black'}),
@@ -85,12 +86,16 @@ layout_ = html.Div(
                 dmc.Drawer(
                     id="drawer-simple",
                     padding="md",   
-                    mt=0,                 
+                    mt=80,                 
                     position="right",
                     children = [
                         layout_sidebar,    
                     ],
-                    style = {'zIndex':1000}
+                    shadow = "xs",
+                    opened = True,
+                    style = {'zIndex':1,'backgroundColor':'#fff'},
+                    overlayProps = {'backgroundOpacity':'0'},
+                    withOverlay = True
                 ),
             ]
         ),

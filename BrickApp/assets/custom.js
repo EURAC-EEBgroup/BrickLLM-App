@@ -76,13 +76,10 @@ calculateVhSubtraction();
 // Update the value when the window is resized
 window.addEventListener('resize', calculateVhSubtraction);
 
-
+// typewriter.js
 // typewriter.js
 
-// Function to create a typewriter effect for an element with id 'typewriter-text'
-// typewriter.js
-
-function typeWriterEffect(text, elementId, speed = 100) {
+function typeWriterEffect(text, elementId, speed = 0.5) {
     const element = document.getElementById(elementId);
     if (!element) return;
 
@@ -100,6 +97,14 @@ function typeWriterEffect(text, elementId, speed = 100) {
 
 // Listen for the custom event 'startTypewriter'
 document.addEventListener('startTypewriter', function (e) {
-    typeWriterEffect(e.detail.text, e.detail.elementId, e.detail.speed);
+    const element = document.getElementById(e.detail.elementId);
+    if (e.detail.text === "") {
+        // Hide the element if no text is provided
+        element.style.display = "none";
+    } else {
+        // Show the element and start the typewriter effect
+        element.style.display = "block";
+        typeWriterEffect(e.detail.text, e.detail.elementId, e.detail.speed);
+    }
 });
 

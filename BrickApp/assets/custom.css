@@ -331,11 +331,12 @@ ul, li {
     line-height: 1.5;
     font-weight: 400;
 }
-.m_5a7c2c9 {
+/* .m_5a7c2c9 {
     background-color: #ededed;
-}
+} */
 .m_b8a05bbd {
-    background-color: #ededed;
+    /* background-color: #ededed; */
+    margin-top: 80px;
 }
 
 .m_9307d992 {
@@ -1765,7 +1766,7 @@ th {
 
 #prompt_command_ontology {
   background-color: transparent;
-  font-size: 16px;
+  font-size: 1rem;
   color: black;
   border:0px;
   resize: none;
@@ -1774,6 +1775,7 @@ th {
   outline: none;
   max-height: 20vh !important;
   padding-left: 1rem;
+  width: 100%;
 }
 
 

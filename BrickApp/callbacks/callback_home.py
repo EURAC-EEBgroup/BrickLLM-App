@@ -3,6 +3,7 @@ from dash.exceptions import PreventUpdate
 from dash_iconify import DashIconify
 import dash_mantine_components as dmc
 import dash
+import dash.dependencies as dd
 from urllib.parse import urlparse
 
 from dotenv import load_dotenv
@@ -54,32 +55,45 @@ if ttl_output:
         f.write(ttl_output)
 '''
 
-
 clientside_callback(
     """
-    function(inputValue) {
-        var element = document.getElementById("typewriter-text");
-
-        if (!inputValue || inputValue.trim() === "") {
-            // Show the typewriter text and start typing "How can I help you?"
-            element.style.display = "block";
-            var event = new CustomEvent('startTypewriter', {
-                detail: {
-                    text: " Describe your building and I will give you the Brick ontological model. ",
-                    elementId: "typewriter-text",
-                    speed: 30
-                }
-            });
-            document.dispatchEvent(event);
-        } else {
-            // Hide the typewriter text if input has content
-            element.style.display = "none";
-        }
+    function(value) {
+        var event = new CustomEvent('startTypewriter', {
+            detail: {
+                text: value === "" ? " How can I help you?" : "",
+                elementId: "typewriter_text",
+                speed:0.5
+            }
+        });
+        document.dispatchEvent(event);
         return "";
     }
     """,
-    Output("typewriter-text", "children"),
+    Output("typewriter_text", "children"),
     Input("prompt_command_ontology", "value")
+)
+
+
+
+
+# JavaScript to auto-resize Textarea
+clientside_callback(
+    """
+    function(text) {
+        const textarea = document.getElementById("prompt_command_ontology");
+        if (textarea) {
+            textarea.style.height = 'auto'; // Reset the height so it adjusts to content
+            const newHeight = Math.min(textarea.scrollHeight, window.innerHeight * 0.2); // Limit to 20vh
+            textarea.style.height = newHeight + 'px';
+            
+            // Print the scrollHeight for debugging purposes
+            console.log("Textarea scrollHeight:", textarea.scrollHeight);
+        }
+        return text;
+    }       
+    """,
+    dd.Output('prompt_command_ontology', 'value'),
+    [dd.Input('prompt_command_ontology', 'value')]
 )
 
 
@@ -188,10 +202,12 @@ def block_selection(btn, APikey):
     Output("prompt_flex","className"),
     Output("btn_icon_ontology","className"),
     Input("btn_confirm_model","checked"),
+    Input("prompt_command_ontology", 'value'),
     State("llm_model_type","value"),
-    State("api-key_value","value")
+    State("api-key_value","value"),
+    
 )
-def enable_prompt(btn, model_type, api_key):
+def enable_prompt(btn, text_value, model_type, api_key):
     '''
     if llm model is selected the api-key should be given 
     '''
@@ -200,11 +216,18 @@ def enable_prompt(btn, model_type, api_key):
         if model_type == "llm_model":
             if api_key == None or api_key == "":
                 return True, True,"promtp_flex_disabled", "icon_run_disabled_style"
+            else:
+                if text_value == "":
+                    return False, True,"promtp_flex_disabled", "icon_run_disabled_style"
+                else:
+                    return False, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
         elif model_type == "local_model":
             return False, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
         return False, False,"promtp_flex_not_disabled", "icon_run_not_disabled_style"
     else:
         return True, True,"promtp_flex_disabled", "icon_run_disabled_style"
+
+
 
 
 # ================================================
@@ -238,19 +261,17 @@ style_action_icon_on = {
     'opacity': 1
 }
 
-@callback(
-    Output("btn_icon_ontology",'display'),
-    Input("prompt_command_ontology", 'value'),
-    State("btn_icon_ontology",'display'),
-    prevent_initial_call=True
-)
-def hide_run_button(valPrompt, stateDisplay):
-    if valPrompt and stateDisplay=="none":
-        return True
-    elif valPrompt.strip()=="" and stateDisplay:
-        return "none"
-    else: 
-        PreventUpdate
+# @callback(
+#     Output("btn_icon_ontology",'display'),
+#     Input("prompt_command_ontology", 'value'),
+#     State("btn_icon_ontology",'display'),
+#     prevent_initial_call=True
+# )
+# def hide_run_button(valPrompt, stateDisplay):
+#     if valPrompt.strip()=="":
+#         return "none"
+#     else: 
+#         return True
     
 
 
