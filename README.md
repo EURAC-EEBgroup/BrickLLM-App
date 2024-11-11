@@ -58,8 +58,8 @@ or create and use a docker container:
     docker compose up
 ```
 ### Example
+<video controls src="BrickApp/assets/brick_audio_720p.mp4" title="BrickLLM app"></video>
 
-(https://github.com/EURAC-EEBgroup/BrickLLM-App/blob/main/BrickApp/assets/brick_audio_480.mov)
 
 
 ### Possible issue running locally on Mac:
