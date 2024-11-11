@@ -57,6 +57,9 @@ or create and use a docker container:
 ``` bash 
     docker compose up
 ```
+### Example
+![Example](BrickApp/assets/brick_audio_480.mov)
+
 
 
 ### Possible issue running locally on Mac:

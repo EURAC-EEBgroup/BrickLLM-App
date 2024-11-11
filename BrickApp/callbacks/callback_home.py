@@ -328,8 +328,6 @@ class BackgroundBuffer:
     def flush(self):  # Required for compatibility with the standard output
         pass
 
-
-#"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"
 def brick_simulation(text_prompt, api_key_client, model_GPT):
     # Load environment variables
     # load_dotenv()
