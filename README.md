@@ -61,7 +61,7 @@ or create and use a docker container:
 
 
 <p align="center">
-  <video src="BrickApp/assets/brick_audio_480.mov" width="300" />
+  <video src="[BrickApp/assets/brick_audio_480.mov](https://github.com/EURAC-EEBgroup/BrickLLM-App/blob/main/BrickApp/assets/brick_audio_480.mov)" width="300" />
 </p>
 
 
