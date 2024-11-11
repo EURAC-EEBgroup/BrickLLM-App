@@ -59,8 +59,8 @@ or create and use a docker container:
 ```
 ### Example
 
-<video controls src="https://github.com/EURAC-EEBgroup/BrickLLM-App/blob/main/BrickApp/assets/brick_audio_720.mp4" title="BrickLLM app"></video>
-
+[<video controls src="https://github.com/EURAC-EEBgroup/BrickLLM-App/blob/main/BrickApp/assets/brick_audio_720.mp4" title="BrickLLM app"></video>
+](https://github.com/user-attachments/assets/00d203a6-9730-4e61-b3d8-b3429e29d775)
 
 
 ### Possible issue running locally on Mac:
