@@ -58,7 +58,7 @@ or create and use a docker container:
     docker compose up
 ```
 ### Example
-![Example](BrickApp/assets/brick_audio_480.mov)
+![Example](/assets/brick_audio_480.mov)
 
 
 
