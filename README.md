@@ -58,9 +58,8 @@ or create and use a docker container:
     docker compose up
 ```
 
-# Example
 
-### Possible issue running in Mac:
+### Possible issue running locally on Mac:
 
 If there are these allerts
 ``` bash 
