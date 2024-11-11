@@ -58,9 +58,9 @@ or create and use a docker container:
     docker compose up
 ```
 ### Example
-![Example](/assets/brick_audio_480.mov)
+![Example](BrickApp/assets/brick_audio_480.mov)
 
-
+<video src="BrickApp/assets/brick_audio_480.mov" width="300" />
 
 ### Possible issue running locally on Mac:
 
