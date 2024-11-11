@@ -332,7 +332,7 @@ class BackgroundBuffer:
 #"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"
 def brick_simulation(text_prompt, api_key_client, model_GPT):
     # Load environment variables
-    load_dotenv()
+    # load_dotenv()
     # Create an instance of BrickSchemaGraph with a custom model
     custom_model = ChatOpenAI(temperature=0, model=model_GPT, api_key=api_key_client)
     brick_graph = BrickSchemaGraph(model=custom_model)
@@ -343,7 +343,7 @@ def brick_simulation(text_prompt, api_key_client, model_GPT):
     # Run the graph without streaming
     result = brick_graph.run(
         input_data=input_data,
-        stream=False
+        stream=True
     )
     print(result)
     print(result.get('elem_hierarchy', None))

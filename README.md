@@ -99,3 +99,6 @@ This work was carried out within European projects:
 
 Moderate - Horizon Europe research and innovation programme under grant agreement No 101069834, with the aim of contributing to the development of open products useful for defining plausible scenarios for the decarbonization of the built environment
 
+-----------------------------
+Thank you to [**BrickSchema**](https://brickschema.org/) for the great work it is doing
+
