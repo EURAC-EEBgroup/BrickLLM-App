@@ -12,7 +12,7 @@ pipfile = "*"
 celery = "*"
 diskcache = "*"
 dash = {extras = ["diskcache"], version = "*"}
-brickllm = "*"
+brickllm = "==1.2.0"
 gunicorn = "*"
 redis = "*"
 dash-daq = "*"
